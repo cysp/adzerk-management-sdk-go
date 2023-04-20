@@ -12,489 +12,121 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
-	openapi_types "github.com/deepmap/oapi-codegen/pkg/types"
 )
 
 const (
 	ApiKeyAuthScopes = "ApiKeyAuth.Scopes"
 )
 
-// Ad defines model for Ad.
-type Ad struct {
-	ActiveKeywords          *[]string  `json:"ActiveKeywords"`
-	CampaignId              *int32     `json:"CampaignId"`
-	Creative                Creative   `json:"Creative"`
-	CustomTargeting         *string    `json:"CustomTargeting"`
-	DistributionType        *int32     `json:"DistributionType,omitempty"`
-	DontAffectParentFreqCap *bool      `json:"DontAffectParentFreqCap"`
-	EndDateISO              *time.Time `json:"EndDateISO"`
-	FlightId                *int32     `json:"FlightId"`
-	FreqCap                 *int32     `json:"FreqCap"`
-	FreqCapDuration         *int32     `json:"FreqCapDuration"`
-	FreqCapType             *int32     `json:"FreqCapType"`
-	Goal                    *int32     `json:"Goal"`
-	GoalType                *int32     `json:"GoalType"`
-	Id                      *int32     `json:"Id"`
-	Iframe                  *bool      `json:"Iframe"`
-	Impressions             *int32     `json:"Impressions"`
-	IsActive                *bool      `json:"IsActive"`
-	IsDeleted               *bool      `json:"IsDeleted"`
-	IsGoalOverride          *bool      `json:"IsGoalOverride"`
-	IsNetworkAd             *bool      `json:"IsNetworkAd"`
-	IsNoTrack               *bool      `json:"IsNoTrack"`
-	IsStartEndDateOverride  *bool      `json:"IsStartEndDateOverride"`
-	Percentage              *int32     `json:"Percentage"`
-	RtbCustomFields         *string    `json:"RtbCustomFields"`
-	SiteId                  *int32     `json:"SiteId"`
-	SizeOverride            *bool      `json:"SizeOverride"`
-	StartDateISO            *time.Time `json:"StartDateISO"`
-	ZoneId                  *int32     `json:"ZoneId"`
-}
-
-// AdList defines model for AdList.
-type AdList struct {
-	Items      *[]Ad  `json:"items,omitempty"`
-	Page       *int32 `json:"page,omitempty"`
-	PageSize   *int32 `json:"pageSize,omitempty"`
-	TotalItems *int64 `json:"totalItems,omitempty"`
-	TotalPages *int32 `json:"totalPages,omitempty"`
-}
-
 // AdType defines model for AdType.
 type AdType struct {
-	Height *int32  `json:"Height,omitempty"`
-	Id     *int32  `json:"Id"`
-	Name   *string `json:"Name"`
-	Width  *int32  `json:"Width,omitempty"`
+	Height int32   `json:"Height"`
+	Id     int32   `json:"Id"`
+	Name   *string `json:"Name,omitempty"`
+	Width  int32   `json:"Width"`
 }
 
 // AdTypeList defines model for AdTypeList.
 type AdTypeList struct {
-	Items      *[]AdType `json:"items,omitempty"`
-	Page       *int32    `json:"page,omitempty"`
-	PageSize   *int32    `json:"pageSize,omitempty"`
-	TotalItems *int64    `json:"totalItems,omitempty"`
-	TotalPages *int32    `json:"totalPages,omitempty"`
-}
-
-// Advertiser defines model for Advertiser.
-type Advertiser struct {
-	CapType           *int32  `json:"CapType"`
-	DailyCapAmount    *int32  `json:"DailyCapAmount"`
-	FreqCap           *int32  `json:"FreqCap"`
-	FreqCapDuration   *int32  `json:"FreqCapDuration"`
-	FreqCapType       *int32  `json:"FreqCapType"`
-	Id                *int    `json:"Id"`
-	IsActive          bool    `json:"IsActive"`
-	IsDeleted         *bool   `json:"IsDeleted,omitempty"`
-	IsFreqCap         *bool   `json:"IsFreqCap"`
-	LifetimeCapAmount *int32  `json:"LifetimeCapAmount"`
-	PartnerId         *int32  `json:"PartnerId"`
-	PlacementLimit    *int32  `json:"PlacementLimit"`
-	RtbCustomFields   *string `json:"RtbCustomFields"`
-	Title             string  `json:"Title"`
-}
-
-// AdvertiserList defines model for AdvertiserList.
-type AdvertiserList struct {
-	Items      *[]Advertiser `json:"items,omitempty"`
-	Page       *int32        `json:"page,omitempty"`
-	PageSize   *int32        `json:"pageSize,omitempty"`
-	TotalItems *int64        `json:"totalItems,omitempty"`
-	TotalPages *int32        `json:"totalPages,omitempty"`
-}
-
-// AdvertiserSearch defines model for AdvertiserSearch.
-type AdvertiserSearch struct {
-	AdvertiserName *string `json:"advertiserName,omitempty"`
-}
-
-// BehavioralTarget defines model for BehavioralTarget.
-type BehavioralTarget struct {
-	OnClick *struct {
-		StopShowingAdsFromAdvertiser        *bool `json:"stopShowingAdsFromAdvertiser"`
-		StopShowingAdsFromFlight            *bool `json:"stopShowingAdsFromFlight"`
-		StoreCategoriesFromFlightAsInterest *bool `json:"storeCategoriesFromFlightAsInterest"`
-	} `json:"onClick,omitempty"`
-	OnConvert *struct {
-		StopShowingAdsFromAdvertiser        *bool `json:"stopShowingAdsFromAdvertiser"`
-		StopShowingAdsFromFlight            *bool `json:"stopShowingAdsFromFlight"`
-		StoreCategoriesFromFlightAsInterest *bool `json:"storeCategoriesFromFlightAsInterest"`
-	} `json:"onConvert,omitempty"`
-}
-
-// Campaign defines model for Campaign.
-type Campaign struct {
-	AdvertiserId            int32                     `json:"AdvertiserId"`
-	CapType                 *int32                    `json:"CapType"`
-	CustomFieldsJson        *string                   `json:"CustomFieldsJson"`
-	DailyCapAmount          *int32                    `json:"DailyCapAmount"`
-	DontAffectParentFreqCap *bool                     `json:"DontAffectParentFreqCap"`
-	EndDate                 *string                   `json:"EndDate"`
-	EndDateISO              *string                   `json:"EndDateISO"`
-	Flights                 *[]map[string]interface{} `json:"Flights"`
-	FreqCap                 *int32                    `json:"FreqCap"`
-	FreqCapDuration         *int32                    `json:"FreqCapDuration"`
-	FreqCapType             *int32                    `json:"FreqCapType"`
-	Id                      *int                      `json:"Id"`
-	IsActive                *bool                     `json:"IsActive,omitempty"`
-	IsArchived              *bool                     `json:"IsArchived"`
-	IsDeleted               *bool                     `json:"IsDeleted,omitempty"`
-	IsFreqCap               *bool                     `json:"IsFreqCap"`
-	LifetimeCapAmount       *int32                    `json:"LifetimeCapAmount"`
-	Name                    string                    `json:"Name"`
-	Price                   *float32                  `json:"Price"`
-	StartDate               string                    `json:"StartDate"`
-	StartDateISO            *string                   `json:"StartDateISO"`
-}
-
-// CampaignList defines model for CampaignList.
-type CampaignList struct {
-	Items      *[]Campaign `json:"items,omitempty"`
-	Page       *int32      `json:"page,omitempty"`
-	PageSize   *int32      `json:"pageSize,omitempty"`
-	TotalItems *int64      `json:"totalItems,omitempty"`
-	TotalPages *int32      `json:"totalPages,omitempty"`
-}
-
-// CampaignSearch defines model for CampaignSearch.
-type CampaignSearch struct {
-	CampaignName *string `json:"campaignName,omitempty"`
+	Items      []AdType `json:"items"`
+	Page       int32    `json:"page"`
+	PageSize   int32    `json:"pageSize"`
+	TotalItems int64    `json:"totalItems"`
+	TotalPages int32    `json:"totalPages"`
 }
 
 // Channel defines model for Channel.
 type Channel struct {
-	AdTypes         *[]int32 `json:"AdTypes,omitempty"`
-	CPM             *float32 `json:"CPM,omitempty"`
-	Commission      *float32 `json:"Commission"`
-	CustomTargeting *string  `json:"CustomTargeting"`
-	Engine          *string  `json:"Engine"`
-	Id              *int32   `json:"Id"`
-	IsDeleted       *bool    `json:"IsDeleted"`
-	Keywords        *string  `json:"Keywords"`
-	Title           *string  `json:"Title,omitempty"`
+	AdTypes         []int32  `json:"AdTypes"`
+	CPM             float32  `json:"CPM"`
+	Commission      *float32 `json:"Commission,omitempty"`
+	CustomTargeting *string  `json:"CustomTargeting,omitempty"`
+	Engine          *string  `json:"Engine,omitempty"`
+	Id              int32    `json:"Id"`
+	IsDeleted       *bool    `json:"IsDeleted,omitempty"`
+	Keywords        *string  `json:"Keywords,omitempty"`
+	Title           string   `json:"Title"`
 }
 
 // ChannelList defines model for ChannelList.
 type ChannelList struct {
-	Items      *[]Channel `json:"items,omitempty"`
-	Page       *int32     `json:"page,omitempty"`
-	PageSize   *int32     `json:"pageSize,omitempty"`
-	TotalItems *int64     `json:"totalItems,omitempty"`
-	TotalPages *int32     `json:"totalPages,omitempty"`
+	ChannelIds []int32 `json:"ChannelIds"`
 }
 
 // ChannelSiteMap defines model for ChannelSiteMap.
 type ChannelSiteMap struct {
-	ChannelId          *int32   `json:"ChannelId,omitempty"`
-	FixedPaymentAmount *float32 `json:"FixedPaymentAmount"`
-	Priority           *int32   `json:"Priority"`
-	SiteId             *int32   `json:"SiteId,omitempty"`
+	ChannelId          int32    `json:"ChannelId"`
+	FixedPaymentAmount *float32 `json:"FixedPaymentAmount,omitempty"`
+	Priority           *int32   `json:"Priority,omitempty"`
+	SiteId             int32    `json:"SiteId"`
 }
 
 // ChannelSiteMapList defines model for ChannelSiteMapList.
 type ChannelSiteMapList struct {
-	Items      *[]ChannelSiteMap `json:"items,omitempty"`
-	Page       *int32            `json:"page,omitempty"`
-	PageSize   *int32            `json:"pageSize,omitempty"`
-	TotalItems *int64            `json:"totalItems,omitempty"`
-	TotalPages *int32            `json:"totalPages,omitempty"`
-}
-
-// Country defines model for Country.
-type Country struct {
-	Code    *string            `json:"Code,omitempty"`
-	Name    *string            `json:"Name,omitempty"`
-	Regions *map[string]Region `json:"Regions"`
-}
-
-// Creative defines model for Creative.
-type Creative struct {
-	AdTypeId          *int32  `json:"AdTypeId"`
-	AdvertiserId      *int32  `json:"AdvertiserId"`
-	Alt               *string `json:"Alt"`
-	Body              *string `json:"Body"`
-	Id                *int32  `json:"Id"`
-	ImageLink         *string `json:"ImageLink"`
-	ImageName         *string `json:"ImageName"`
-	IsActive          *bool   `json:"IsActive"`
-	IsDeleted         *bool   `json:"IsDeleted"`
-	IsHTMLJS          *bool   `json:"IsHTMLJS"`
-	IsNetworkAd       *bool   `json:"IsNetworkAd"`
-	IsNoTrack         *bool   `json:"IsNoTrack"`
-	Metadata          *string `json:"Metadata"`
-	SaveEmptyCreative *bool   `json:"SaveEmptyCreative"`
-	ScriptBody        *string `json:"ScriptBody"`
-	TemplateId        *int32  `json:"TemplateId"`
-	TemplateValues    *string `json:"TemplateValues"`
-	Title             *string `json:"Title"`
-	Url               *string `json:"Url"`
-}
-
-// CreativeList defines model for CreativeList.
-type CreativeList struct {
-	Items      *[]Creative `json:"items,omitempty"`
-	Page       *int32      `json:"page,omitempty"`
-	PageSize   *int32      `json:"pageSize,omitempty"`
-	TotalItems *int64      `json:"totalItems,omitempty"`
-	TotalPages *int32      `json:"totalPages,omitempty"`
-}
-
-// CreativeTemplate defines model for CreativeTemplate.
-type CreativeTemplate struct {
-	Contents    *[]CreativeTemplateContents `json:"Contents,omitempty"`
-	Description string                      `json:"Description"`
-	Fields      *[]CreativeTemplateField    `json:"Fields,omitempty"`
-	Id          *int32                      `json:"Id"`
-	IsArchived  *bool                       `json:"IsArchived,omitempty"`
-	Name        string                      `json:"Name"`
-}
-
-// CreativeTemplateContents defines model for CreativeTemplateContents.
-type CreativeTemplateContents struct {
-	Body *string `json:"Body,omitempty"`
-	Type *string `json:"Type,omitempty"`
-}
-
-// CreativeTemplateField defines model for CreativeTemplateField.
-type CreativeTemplateField struct {
-	Default     *map[string]interface{} `json:"Default,omitempty"`
-	Description *string                 `json:"Description,omitempty"`
-	Hidden      *bool                   `json:"Hidden,omitempty"`
-	Name        *string                 `json:"Name,omitempty"`
-	Required    *bool                   `json:"Required,omitempty"`
-	Type        *string                 `json:"Type,omitempty"`
-	Variable    *string                 `json:"Variable,omitempty"`
-}
-
-// CreativeTemplateList defines model for CreativeTemplateList.
-type CreativeTemplateList struct {
-	Items      *[]CreativeTemplate `json:"items,omitempty"`
-	Page       *int32              `json:"page,omitempty"`
-	PageSize   *int32              `json:"pageSize,omitempty"`
-	TotalItems *int64              `json:"totalItems,omitempty"`
-	TotalPages *int32              `json:"totalPages,omitempty"`
-}
-
-// Flight defines model for Flight.
-type Flight struct {
-	BehavioralTargeting             *BehavioralTarget `json:"BehavioralTargeting,omitempty"`
-	CampaignId                      int32             `json:"CampaignId"`
-	CanPassback                     *bool             `json:"CanPassback"`
-	CapType                         *int32            `json:"CapType"`
-	CeilingECPM                     *float32          `json:"CeilingECPM"`
-	CreativeMaps                    *[]Ad             `json:"CreativeMaps"`
-	CustomFieldsJson                *string           `json:"CustomFieldsJson"`
-	CustomTargeting                 *string           `json:"CustomTargeting"`
-	DailyCapAmount                  *int32            `json:"DailyCapAmount"`
-	DailyCapAmountDecimal           *float32          `json:"DailyCapAmountDecimal"`
-	DatePartingEndTimeISO           *time.Time        `json:"DatePartingEndTimeISO"`
-	DatePartingStartTimeISO         *time.Time        `json:"DatePartingStartTimeISO"`
-	DefaultECPM                     *float32          `json:"DefaultECPM"`
-	DeliveryStatus                  *int32            `json:"DeliveryStatus"`
-	DontAffectParentFreqCap         *bool             `json:"DontAffectParentFreqCap"`
-	DuplicateMode                   *int32            `json:"DuplicateMode"`
-	ECPMBurnInImpressions           *int32            `json:"ECPMBurnInImpressions"`
-	ECPMMultiplier                  *float32          `json:"ECPMMultiplier"`
-	ECPMOptimizePeriod              *int32            `json:"ECPMOptimizePeriod"`
-	EffectiveCPMOverride            *float32          `json:"EffectiveCPMOverride"`
-	EndDateISO                      *time.Time        `json:"EndDateISO"`
-	FloorECPM                       *float32          `json:"FloorECPM"`
-	FreqCap                         *int32            `json:"FreqCap"`
-	FreqCapDuration                 *int32            `json:"FreqCapDuration"`
-	FreqCapType                     *int32            `json:"FreqCapType"`
-	GeoTargeting                    *[]GeoTarget      `json:"GeoTargeting"`
-	GoalType                        int32             `json:"GoalType"`
-	Id                              *int32            `json:"Id"`
-	Impressions                     int32             `json:"Impressions"`
-	IsActive                        bool              `json:"IsActive"`
-	IsArchived                      *bool             `json:"IsArchived"`
-	IsCompanion                     *bool             `json:"IsCompanion"`
-	IsDeleted                       *bool             `json:"IsDeleted,omitempty"`
-	IsECPMOptimized                 *bool             `json:"IsECPMOptimized"`
-	IsFreqCap                       *bool             `json:"IsFreqCap"`
-	IsFriday                        *bool             `json:"IsFriday"`
-	IsMonday                        *bool             `json:"IsMonday"`
-	IsNoDuplicates                  *bool             `json:"IsNoDuplicates"`
-	IsSaturday                      *bool             `json:"IsSaturday"`
-	IsSunday                        *bool             `json:"IsSunday"`
-	IsTargetingOptimization         *bool             `json:"IsTargetingOptimization"`
-	IsThursday                      *bool             `json:"IsThursday"`
-	IsTrackingConversions           *bool             `json:"IsTrackingConversions"`
-	IsTuesday                       *bool             `json:"IsTuesday"`
-	IsWednesday                     *bool             `json:"IsWednesday"`
-	Keywords                        *string           `json:"Keywords"`
-	LifetimeCapAmount               *int32            `json:"LifetimeCapAmount"`
-	LifetimeCapAmountDecimal        *float32          `json:"LifetimeCapAmountDecimal"`
-	Name                            string            `json:"Name"`
-	NoEndDate                       *bool             `json:"NoEndDate"`
-	PassbackSortOrder               *int32            `json:"PassbackSortOrder"`
-	Price                           *float32          `json:"Price"`
-	PriorityId                      int32             `json:"PriorityId"`
-	RateType                        *int32            `json:"RateType"`
-	RequireStrictLocation           *bool             `json:"RequireStrictLocation"`
-	SiteZoneTargeting               *[]SiteZone       `json:"SiteZoneTargeting"`
-	StartDateISO                    time.Time         `json:"StartDateISO"`
-	TargetingOptimizationBurnIn     *int32            `json:"TargetingOptimizationBurnIn"`
-	TargetingOptimizationCanMiss    *bool             `json:"TargetingOptimizationCanMiss"`
-	TargetingOptimizationTarget     *float32          `json:"TargetingOptimizationTarget"`
-	TargetingOptimizationTargetType *int32            `json:"TargetingOptimizationTargetType"`
-	TargetingOptimizationType       *int32            `json:"TargetingOptimizationType"`
-}
-
-// FlightCategory defines model for FlightCategory.
-type FlightCategory struct {
-	Id   *int32  `json:"Id"`
-	Name *string `json:"Name,omitempty"`
-}
-
-// FlightCategoryList defines model for FlightCategoryList.
-type FlightCategoryList struct {
-	Items      *[]FlightCategory `json:"items,omitempty"`
-	Page       *int32            `json:"page,omitempty"`
-	PageSize   *int32            `json:"pageSize,omitempty"`
-	TotalItems *int64            `json:"totalItems,omitempty"`
-	TotalPages *int32            `json:"totalPages,omitempty"`
-}
-
-// FlightList defines model for FlightList.
-type FlightList struct {
-	Items      *[]Flight `json:"items,omitempty"`
-	Page       *int32    `json:"page,omitempty"`
-	PageSize   *int32    `json:"pageSize,omitempty"`
-	TotalItems *int64    `json:"totalItems,omitempty"`
-	TotalPages *int32    `json:"totalPages,omitempty"`
-}
-
-// GeoTarget defines model for GeoTarget.
-type GeoTarget struct {
-	CountryCode *string `json:"CountryCode,omitempty"`
-	IsExclude   *bool   `json:"IsExclude"`
-	LocationId  *int32  `json:"LocationId"`
-	MetroCode   *int32  `json:"MetroCode,omitempty"`
-	Region      *string `json:"Region,omitempty"`
-}
-
-// Metro defines model for Metro.
-type Metro struct {
-	Code        *string   `json:"Code,omitempty"`
-	Name        *string   `json:"Name,omitempty"`
-	RegionCodes *[]string `json:"RegionCodes"`
+	Items      []ChannelSiteMap `json:"items"`
+	Page       int32            `json:"page"`
+	PageSize   int32            `json:"pageSize"`
+	TotalItems int64            `json:"totalItems"`
+	TotalPages int32            `json:"totalPages"`
 }
 
 // Priority defines model for Priority.
 type Priority struct {
-	ChannelId                         *int32   `json:"ChannelId"`
-	FloorPrice                        *float32 `json:"FloorPrice"`
-	Id                                *int32   `json:"Id"`
-	IsAdChain                         *bool    `json:"IsAdChain,omitempty"`
-	IsAdChainOptimized                *bool    `json:"IsAdChainOptimized,omitempty"`
-	IsAdChainOrdered                  *bool    `json:"IsAdChainOrdered,omitempty"`
-	IsAuction                         *bool    `json:"IsAuction,omitempty"`
-	IsDeleted                         *bool    `json:"IsDeleted,omitempty"`
-	IsKeywordOptimized                *bool    `json:"IsKeywordOptimized"`
-	IsSecondPricing                   *bool    `json:"IsSecondPricing"`
-	Name                              *string  `json:"Name,omitempty"`
-	PassbackTimeout                   *int32   `json:"PassbackTimeout"`
-	RelevancyScoreConfig              *string  `json:"RelevancyScoreConfig"`
-	RelevancyScoreConfigJSON          *string  `json:"RelevancyScoreConfigJSON"`
-	SelectionAlgorithm                *int32   `json:"SelectionAlgorithm,omitempty"`
-	SerializeRelevancyScoreConfigJSON *bool    `json:"SerializeRelevancyScoreConfigJSON"`
-	Weight                            *int32   `json:"Weight"`
-}
-
-// PriorityList defines model for PriorityList.
-type PriorityList struct {
-	Items      *[]Priority `json:"items,omitempty"`
-	Page       *int32      `json:"page,omitempty"`
-	PageSize   *int32      `json:"pageSize,omitempty"`
-	TotalItems *int64      `json:"totalItems,omitempty"`
-	TotalPages *int32      `json:"totalPages,omitempty"`
-}
-
-// Region defines model for Region.
-type Region struct {
-	Code        *string           `json:"Code,omitempty"`
-	CountryCode *string           `json:"CountryCode,omitempty"`
-	Metros      *map[string]Metro `json:"Metros"`
-	Name        *string           `json:"Name,omitempty"`
+	ChannelId                         *int32   `json:"ChannelId,omitempty"`
+	FloorPrice                        *float32 `json:"FloorPrice,omitempty"`
+	Id                                int32    `json:"Id"`
+	IsAdChain                         bool     `json:"IsAdChain"`
+	IsAdChainOptimized                bool     `json:"IsAdChainOptimized"`
+	IsAdChainOrdered                  bool     `json:"IsAdChainOrdered"`
+	IsAuction                         bool     `json:"IsAuction"`
+	IsDeleted                         bool     `json:"IsDeleted"`
+	IsKeywordOptimized                *bool    `json:"IsKeywordOptimized,omitempty"`
+	IsSecondPricing                   *bool    `json:"IsSecondPricing,omitempty"`
+	Name                              string   `json:"Name"`
+	PassbackTimeout                   *int32   `json:"PassbackTimeout,omitempty"`
+	RelevancyScoreConfig              *string  `json:"RelevancyScoreConfig,omitempty"`
+	RelevancyScoreConfigJSON          *string  `json:"RelevancyScoreConfigJSON,omitempty"`
+	SelectionAlgorithm                int32    `json:"SelectionAlgorithm"`
+	SerializeRelevancyScoreConfigJSON *bool    `json:"SerializeRelevancyScoreConfigJSON,omitempty"`
+	Weight                            *int32   `json:"Weight,omitempty"`
 }
 
 // Site defines model for Site.
 type Site struct {
-	Id                 *int32   `json:"Id"`
-	IsDeleted          *bool    `json:"IsDeleted"`
-	NetworkMargin      *float32 `json:"NetworkMargin"`
-	PublisherAccountId *int32   `json:"PublisherAccountId"`
-	Title              *string  `json:"Title,omitempty"`
-	Url                *string  `json:"Url,omitempty"`
+	Id                 int32    `json:"Id"`
+	IsDeleted          *bool    `json:"IsDeleted,omitempty"`
+	NetworkMargin      *float32 `json:"NetworkMargin,omitempty"`
+	PublisherAccountId *int32   `json:"PublisherAccountId,omitempty"`
+	Title              string   `json:"Title"`
+	Url                string   `json:"Url"`
 }
 
 // SiteList defines model for SiteList.
 type SiteList struct {
-	Items      *[]Site `json:"items,omitempty"`
-	Page       *int32  `json:"page,omitempty"`
-	PageSize   *int32  `json:"pageSize,omitempty"`
-	TotalItems *int64  `json:"totalItems,omitempty"`
-	TotalPages *int32  `json:"totalPages,omitempty"`
-}
-
-// SiteZone defines model for SiteZone.
-type SiteZone struct {
-	FlightId   *int32 `json:"FlightId"`
-	Id         *int32 `json:"Id"`
-	IsExcluded *bool  `json:"IsExcluded,omitempty"`
-	SiteId     *int32 `json:"SiteId,omitempty"`
-	ZoneId     *int32 `json:"ZoneId,omitempty"`
-}
-
-// TrackingDetails defines model for TrackingDetails.
-type TrackingDetails struct {
-	Id                 *int32  `json:"Id,omitempty"`
-	ImpressionPixelUrl *string `json:"ImpressionPixelUrl,omitempty"`
-	StaticClickUrl     *string `json:"StaticClickUrl,omitempty"`
-}
-
-// TrackingPixel defines model for TrackingPixel.
-type TrackingPixel struct {
-	TrackingCode *string `json:"trackingCode,omitempty"`
+	Items      []Site `json:"items"`
+	Page       int32  `json:"page"`
+	PageSize   int32  `json:"pageSize"`
+	TotalItems int64  `json:"totalItems"`
+	TotalPages int32  `json:"totalPages"`
 }
 
 // Zone defines model for Zone.
 type Zone struct {
-	Id        *int32  `json:"Id"`
-	IsDeleted *bool   `json:"IsDeleted"`
-	Name      *string `json:"Name,omitempty"`
-	SiteId    *int32  `json:"SiteId,omitempty"`
+	Id        int32  `json:"Id"`
+	IsDeleted *bool  `json:"IsDeleted,omitempty"`
+	Name      string `json:"Name"`
+	SiteId    int32  `json:"SiteId"`
 }
 
 // ZoneList defines model for ZoneList.
 type ZoneList struct {
-	Items      *[]Zone `json:"items,omitempty"`
-	Page       *int32  `json:"page,omitempty"`
-	PageSize   *int32  `json:"pageSize,omitempty"`
-	TotalItems *int64  `json:"totalItems,omitempty"`
-	TotalPages *int32  `json:"totalPages,omitempty"`
-}
-
-// SchemasChannelList defines model for schemas-ChannelList.
-type SchemasChannelList struct {
-	ChannelIds *[]int32 `json:"ChannelIds,omitempty"`
-}
-
-// GetAdTrackingUrlsParams defines parameters for GetAdTrackingUrls.
-type GetAdTrackingUrlsParams struct {
-	// SiteId The site in your network where the impression and/or click should be tracked. The site must be eligible to serve the ad (i.e. the ad's flight belongs to a channel the site is associated with).
-	SiteId *int32 `form:"siteId,omitempty" json:"siteId,omitempty"`
-
-	// ZoneId An optional zone where the impression and/or click should be tracked. Must belong to the `siteid`.
-	ZoneId *int32 `form:"zoneId,omitempty" json:"zoneId,omitempty"`
-
-	// Keywords A comma separated string of keywords, like `foo,bar,baz`, that will be tracked in reporting with the click and/or impression. Keywords must not contain [disallowed characters defined in the keyword documentation](https://dev.adzerk.com/docs/keyword-targeting#section-keywords-and-special-characters).
-	Keywords *string `form:"keywords,omitempty" json:"keywords,omitempty"`
+	Items      []Zone `json:"items"`
+	Page       int32  `json:"page"`
+	PageSize   int32  `json:"pageSize"`
+	TotalItems int64  `json:"totalItems"`
+	TotalPages int32  `json:"totalPages"`
 }
 
 // ListAdTypesParams defines parameters for ListAdTypes.
@@ -507,54 +139,10 @@ type ListAdTypesParams struct {
 }
 
 // CreateAdTypeJSONBody defines parameters for CreateAdType.
-type CreateAdTypeJSONBody = map[string]interface{}
-
-// ListAdvertisersParams defines parameters for ListAdvertisers.
-type ListAdvertisersParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// CreateAdvertiserJSONBody defines parameters for CreateAdvertiser.
-type CreateAdvertiserJSONBody = map[string]interface{}
-
-// ListCreativesForAdvertiserParams defines parameters for ListCreativesForAdvertiser.
-type ListCreativesForAdvertiserParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// UpdateAdvertiserJSONBody defines parameters for UpdateAdvertiser.
-type UpdateAdvertiserJSONBody = map[string]interface{}
-
-// ListCampaignsParams defines parameters for ListCampaigns.
-type ListCampaignsParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// CreateCampaignJSONBody defines parameters for CreateCampaign.
-type CreateCampaignJSONBody = map[string]interface{}
-
-// UpdateCampaignJSONBody defines parameters for UpdateCampaign.
-type UpdateCampaignJSONBody = map[string]interface{}
-
-// GetFlightCategoriesParams defines parameters for GetFlightCategories.
-type GetFlightCategoriesParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
+type CreateAdTypeJSONBody struct {
+	Height int32   `json:"Height"`
+	Name   *string `json:"Name,omitempty"`
+	Width  int32   `json:"Width"`
 }
 
 // ListChannelsParams defines parameters for ListChannels.
@@ -567,13 +155,16 @@ type ListChannelsParams struct {
 }
 
 // CreateChannelJSONBody defines parameters for CreateChannel.
-type CreateChannelJSONBody = map[string]interface{}
+type CreateChannelJSONBody struct {
+	AdTypes   []int32  `json:"AdTypes"`
+	CPM       *float32 `json:"CPM,omitempty"`
+	Engine    int32    `json:"Engine"`
+	IsDeleted *bool    `json:"IsDeleted,omitempty"`
+	Title     string   `json:"Title"`
+}
 
-// UpdateChannelJSONBody defines parameters for UpdateChannel.
-type UpdateChannelJSONBody = map[string]interface{}
-
-// ListAdTypesForChannelParams defines parameters for ListAdTypesForChannel.
-type ListAdTypesForChannelParams struct {
+// ListForChannelAdTypeParams defines parameters for ListForChannelAdType.
+type ListForChannelAdTypeParams struct {
 	// PageSize The size of the page to be returned
 	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
 
@@ -581,8 +172,20 @@ type ListAdTypesForChannelParams struct {
 	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
 }
 
-// CreateAdTypeForChannelJSONBody defines parameters for CreateAdTypeForChannel.
-type CreateAdTypeForChannelJSONBody = map[string]interface{}
+// CreateForChannelAdTypeJSONBody defines parameters for CreateForChannelAdType.
+type CreateForChannelAdTypeJSONBody struct {
+	Height int32   `json:"Height"`
+	Name   *string `json:"Name,omitempty"`
+	Width  int32   `json:"Width"`
+}
+
+// UpdateChannelJSONBody defines parameters for UpdateChannel.
+type UpdateChannelJSONBody struct {
+	AdTypes []int32 `json:"AdTypes"`
+	Engine  int32   `json:"Engine"`
+	Id      int32   `json:"Id"`
+	Title   string  `json:"Title"`
+}
 
 // ListChannelSiteMapsParams defines parameters for ListChannelSiteMaps.
 type ListChannelSiteMapsParams struct {
@@ -594,133 +197,27 @@ type ListChannelSiteMapsParams struct {
 }
 
 // CreateChannelSiteMapJSONBody defines parameters for CreateChannelSiteMap.
-type CreateChannelSiteMapJSONBody = map[string]interface{}
+type CreateChannelSiteMapJSONBody struct {
+	ChannelId int32 `json:"channelId"`
+	Priority  int32 `json:"priority"`
+	SiteId    int32 `json:"siteId"`
+}
 
 // UpdateChannelSiteMapJSONBody defines parameters for UpdateChannelSiteMap.
-type UpdateChannelSiteMapJSONBody = map[string]interface{}
-
-// CreateCreativeJSONBody defines parameters for CreateCreative.
-type CreateCreativeJSONBody = map[string]interface{}
-
-// UpdateCreativeJSONBody defines parameters for UpdateCreative.
-type UpdateCreativeJSONBody = map[string]interface{}
-
-// UploadCreativeImageMultipartBody defines parameters for UploadCreativeImage.
-type UploadCreativeImageMultipartBody struct {
-	File *openapi_types.File `json:"file,omitempty"`
+type UpdateChannelSiteMapJSONBody struct {
+	ChannelId int32 `json:"channelId"`
+	Priority  int32 `json:"priority"`
+	SiteId    int32 `json:"siteId"`
 }
 
-// UploadCreativeImageParams defines parameters for UploadCreativeImage.
-type UploadCreativeImageParams struct {
-	// SizeOverride Add this to upload an image that is a different dimension than the creative's `adTypeId`
-	SizeOverride *bool `form:"sizeOverride,omitempty" json:"sizeOverride,omitempty"`
-
-	// FieldName Specifies which image field (of Type `File`) the file will be uploaded to. Can be used with single-image and multiple-image templates. If a template has only one image, `fieldName` is not required.
-	FieldName *string `form:"fieldName,omitempty" json:"fieldName,omitempty"`
-}
-
-// FilterFlightsParams defines parameters for FilterFlights.
-type FilterFlightsParams struct {
-	IsActive        *bool      `form:"isActive,omitempty" json:"isActive,omitempty"`
-	IsArchived      *bool      `form:"isArchived,omitempty" json:"isArchived,omitempty"`
-	BeforeStartDate *time.Time `form:"beforeStartDate,omitempty" json:"beforeStartDate,omitempty"`
-	AfterStartDate  *time.Time `form:"afterStartDate,omitempty" json:"afterStartDate,omitempty"`
-	BeforeEndDate   *time.Time `form:"beforeEndDate,omitempty" json:"beforeEndDate,omitempty"`
-	AfterEndDate    *time.Time `form:"afterEndDate,omitempty" json:"afterEndDate,omitempty"`
-	NoEndDate       *bool      `form:"NoEndDate,omitempty" json:"NoEndDate,omitempty"`
-	Name            *string    `form:"name,omitempty" json:"name,omitempty"`
-	NameContains    *string    `form:"nameContains,omitempty" json:"nameContains,omitempty"`
-}
-
-// FilterSitesParams defines parameters for FilterSites.
-type FilterSitesParams struct {
+// FilterSiteParams defines parameters for FilterSite.
+type FilterSiteParams struct {
 	// TitleLike Filters the stream of sites based on the Title. This is a simple match - if the string provided in the query parameter is present anywhere in a site's Title, that site will be returned in the results.
 	TitleLike *string `form:"titleLike,omitempty" json:"titleLike,omitempty"`
 
 	// UrlLike Filters the stream of sites based on the Url. This is a simple match - if the string provided in the query parameter is present anywhere in a site's Url, that site will be returned in the results.
 	UrlLike *string `form:"urlLike,omitempty" json:"urlLike,omitempty"`
 }
-
-// ListFlightsParams defines parameters for ListFlights.
-type ListFlightsParams struct {
-	// IsArchived Set to `true` if you only want archived Flights
-	IsArchived *bool `form:"isArchived,omitempty" json:"isArchived,omitempty"`
-
-	// IsActive Set to `true` if you only want active Flights
-	IsActive *bool `form:"isActive,omitempty" json:"isActive,omitempty"`
-
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// CreateFlightJSONBody defines parameters for CreateFlight.
-type CreateFlightJSONBody = map[string]interface{}
-
-// GetFlightParams defines parameters for GetFlight.
-type GetFlightParams struct {
-	// ExcludeAds Flag to exclude Ads (Creative/Flight Maps) from the results
-	ExcludeAds *bool `form:"excludeAds,omitempty" json:"excludeAds,omitempty"`
-}
-
-// UpdateFlightJSONBody defines parameters for UpdateFlight.
-type UpdateFlightJSONBody = map[string]interface{}
-
-// GetFlightCategoriesForFlightParams defines parameters for GetFlightCategoriesForFlight.
-type GetFlightCategoriesForFlightParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// CreateFlightCategoryJSONBody defines parameters for CreateFlightCategory.
-type CreateFlightCategoryJSONBody = map[string]interface{}
-
-// CreateAdJSONBody defines parameters for CreateAd.
-type CreateAdJSONBody = map[string]interface{}
-
-// UpdateAdJSONBody defines parameters for UpdateAd.
-type UpdateAdJSONBody = map[string]interface{}
-
-// ListAdsForFlightParams defines parameters for ListAdsForFlight.
-type ListAdsForFlightParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// CreateGeoTargetJSONBody defines parameters for CreateGeoTarget.
-type CreateGeoTargetJSONBody = map[string]interface{}
-
-// UpdateGeoTargetJSONBody defines parameters for UpdateGeoTarget.
-type UpdateGeoTargetJSONBody = map[string]interface{}
-
-// CreateSiteZoneTargetingJSONBody defines parameters for CreateSiteZoneTargeting.
-type CreateSiteZoneTargetingJSONBody = map[string]interface{}
-
-// UpdateSiteZoneTargetingJSONBody defines parameters for UpdateSiteZoneTargeting.
-type UpdateSiteZoneTargetingJSONBody = map[string]interface{}
-
-// ListPrioritiesParams defines parameters for ListPriorities.
-type ListPrioritiesParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
-}
-
-// CreatePriorityJSONBody defines parameters for CreatePriority.
-type CreatePriorityJSONBody = map[string]interface{}
-
-// UpdatePriorityJSONBody defines parameters for UpdatePriority.
-type UpdatePriorityJSONBody = map[string]interface{}
 
 // ListSitesParams defines parameters for ListSites.
 type ListSitesParams struct {
@@ -732,10 +229,21 @@ type ListSitesParams struct {
 }
 
 // CreateSiteJSONBody defines parameters for CreateSite.
-type CreateSiteJSONBody = map[string]interface{}
+type CreateSiteJSONBody struct {
+	IsDeleted     *bool    `json:"IsDeleted,omitempty"`
+	NetworkMargin *float32 `json:"NetworkMargin,omitempty"`
+	Title         string   `json:"Title"`
+	URL           string   `json:"URL"`
+}
 
 // UpdateSiteJSONBody defines parameters for UpdateSite.
-type UpdateSiteJSONBody = map[string]interface{}
+type UpdateSiteJSONBody struct {
+	Id            int32    `json:"Id"`
+	IsDeleted     *bool    `json:"IsDeleted,omitempty"`
+	NetworkMargin *float32 `json:"NetworkMargin,omitempty"`
+	Title         string   `json:"Title"`
+	URL           string   `json:"URL"`
+}
 
 // ListZonesParams defines parameters for ListZones.
 type ListZonesParams struct {
@@ -747,121 +255,49 @@ type ListZonesParams struct {
 }
 
 // CreateZoneJSONBody defines parameters for CreateZone.
-type CreateZoneJSONBody = map[string]interface{}
-
-// UpdateZoneJSONBody defines parameters for UpdateZone.
-type UpdateZoneJSONBody = map[string]interface{}
-
-// ListCreativeTemplatesParams defines parameters for ListCreativeTemplates.
-type ListCreativeTemplatesParams struct {
-	// PageSize The size of the page to be returned
-	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
-
-	// Page The page number to be returned
-	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
+type CreateZoneJSONBody struct {
+	IsDeleted *bool  `json:"IsDeleted,omitempty"`
+	Name      string `json:"Name"`
+	SiteId    *int32 `json:"SiteId,omitempty"`
 }
 
-// CreateCreativeTemplateJSONBody defines parameters for CreateCreativeTemplate.
-type CreateCreativeTemplateJSONBody = map[string]interface{}
-
-// UpdateCreativeTemplateJSONBody defines parameters for UpdateCreativeTemplate.
-type UpdateCreativeTemplateJSONBody = map[string]interface{}
+// UpdateZoneJSONBody defines parameters for UpdateZone.
+type UpdateZoneJSONBody struct {
+	Id        int32  `json:"Id"`
+	IsDeleted *bool  `json:"IsDeleted,omitempty"`
+	Name      string `json:"Name"`
+	SiteId    *int32 `json:"SiteId,omitempty"`
+}
 
 // CreateAdTypeJSONRequestBody defines body for CreateAdType for application/json ContentType.
-type CreateAdTypeJSONRequestBody = CreateAdTypeJSONBody
-
-// CreateAdvertiserJSONRequestBody defines body for CreateAdvertiser for application/json ContentType.
-type CreateAdvertiserJSONRequestBody = CreateAdvertiserJSONBody
-
-// SearchAdvertisersFormdataRequestBody defines body for SearchAdvertisers for application/x-www-form-urlencoded ContentType.
-type SearchAdvertisersFormdataRequestBody = AdvertiserSearch
-
-// UpdateAdvertiserJSONRequestBody defines body for UpdateAdvertiser for application/json ContentType.
-type UpdateAdvertiserJSONRequestBody = UpdateAdvertiserJSONBody
-
-// CreateCampaignJSONRequestBody defines body for CreateCampaign for application/json ContentType.
-type CreateCampaignJSONRequestBody = CreateCampaignJSONBody
-
-// SearchCampaignsFormdataRequestBody defines body for SearchCampaigns for application/x-www-form-urlencoded ContentType.
-type SearchCampaignsFormdataRequestBody = CampaignSearch
-
-// UpdateCampaignJSONRequestBody defines body for UpdateCampaign for application/json ContentType.
-type UpdateCampaignJSONRequestBody = UpdateCampaignJSONBody
+type CreateAdTypeJSONRequestBody CreateAdTypeJSONBody
 
 // CreateChannelJSONRequestBody defines body for CreateChannel for application/json ContentType.
-type CreateChannelJSONRequestBody = CreateChannelJSONBody
+type CreateChannelJSONRequestBody CreateChannelJSONBody
+
+// CreateForChannelAdTypeJSONRequestBody defines body for CreateForChannelAdType for application/json ContentType.
+type CreateForChannelAdTypeJSONRequestBody CreateForChannelAdTypeJSONBody
 
 // UpdateChannelJSONRequestBody defines body for UpdateChannel for application/json ContentType.
-type UpdateChannelJSONRequestBody = UpdateChannelJSONBody
-
-// CreateAdTypeForChannelJSONRequestBody defines body for CreateAdTypeForChannel for application/json ContentType.
-type CreateAdTypeForChannelJSONRequestBody = CreateAdTypeForChannelJSONBody
+type UpdateChannelJSONRequestBody UpdateChannelJSONBody
 
 // CreateChannelSiteMapJSONRequestBody defines body for CreateChannelSiteMap for application/json ContentType.
-type CreateChannelSiteMapJSONRequestBody = CreateChannelSiteMapJSONBody
+type CreateChannelSiteMapJSONRequestBody CreateChannelSiteMapJSONBody
 
 // UpdateChannelSiteMapJSONRequestBody defines body for UpdateChannelSiteMap for application/json ContentType.
-type UpdateChannelSiteMapJSONRequestBody = UpdateChannelSiteMapJSONBody
-
-// CreateCreativeJSONRequestBody defines body for CreateCreative for application/json ContentType.
-type CreateCreativeJSONRequestBody = CreateCreativeJSONBody
-
-// UpdateCreativeJSONRequestBody defines body for UpdateCreative for application/json ContentType.
-type UpdateCreativeJSONRequestBody = UpdateCreativeJSONBody
-
-// UploadCreativeImageMultipartRequestBody defines body for UploadCreativeImage for multipart/form-data ContentType.
-type UploadCreativeImageMultipartRequestBody UploadCreativeImageMultipartBody
-
-// CreateFlightJSONRequestBody defines body for CreateFlight for application/json ContentType.
-type CreateFlightJSONRequestBody = CreateFlightJSONBody
-
-// UpdateFlightJSONRequestBody defines body for UpdateFlight for application/json ContentType.
-type UpdateFlightJSONRequestBody = UpdateFlightJSONBody
-
-// CreateFlightCategoryJSONRequestBody defines body for CreateFlightCategory for application/json ContentType.
-type CreateFlightCategoryJSONRequestBody = CreateFlightCategoryJSONBody
-
-// CreateAdJSONRequestBody defines body for CreateAd for application/json ContentType.
-type CreateAdJSONRequestBody = CreateAdJSONBody
-
-// UpdateAdJSONRequestBody defines body for UpdateAd for application/json ContentType.
-type UpdateAdJSONRequestBody = UpdateAdJSONBody
-
-// CreateGeoTargetJSONRequestBody defines body for CreateGeoTarget for application/json ContentType.
-type CreateGeoTargetJSONRequestBody = CreateGeoTargetJSONBody
-
-// UpdateGeoTargetJSONRequestBody defines body for UpdateGeoTarget for application/json ContentType.
-type UpdateGeoTargetJSONRequestBody = UpdateGeoTargetJSONBody
-
-// CreateSiteZoneTargetingJSONRequestBody defines body for CreateSiteZoneTargeting for application/json ContentType.
-type CreateSiteZoneTargetingJSONRequestBody = CreateSiteZoneTargetingJSONBody
-
-// UpdateSiteZoneTargetingJSONRequestBody defines body for UpdateSiteZoneTargeting for application/json ContentType.
-type UpdateSiteZoneTargetingJSONRequestBody = UpdateSiteZoneTargetingJSONBody
-
-// CreatePriorityJSONRequestBody defines body for CreatePriority for application/json ContentType.
-type CreatePriorityJSONRequestBody = CreatePriorityJSONBody
-
-// UpdatePriorityJSONRequestBody defines body for UpdatePriority for application/json ContentType.
-type UpdatePriorityJSONRequestBody = UpdatePriorityJSONBody
+type UpdateChannelSiteMapJSONRequestBody UpdateChannelSiteMapJSONBody
 
 // CreateSiteJSONRequestBody defines body for CreateSite for application/json ContentType.
-type CreateSiteJSONRequestBody = CreateSiteJSONBody
+type CreateSiteJSONRequestBody CreateSiteJSONBody
 
 // UpdateSiteJSONRequestBody defines body for UpdateSite for application/json ContentType.
-type UpdateSiteJSONRequestBody = UpdateSiteJSONBody
+type UpdateSiteJSONRequestBody UpdateSiteJSONBody
 
 // CreateZoneJSONRequestBody defines body for CreateZone for application/json ContentType.
-type CreateZoneJSONRequestBody = CreateZoneJSONBody
+type CreateZoneJSONRequestBody CreateZoneJSONBody
 
 // UpdateZoneJSONRequestBody defines body for UpdateZone for application/json ContentType.
-type UpdateZoneJSONRequestBody = UpdateZoneJSONBody
-
-// CreateCreativeTemplateJSONRequestBody defines body for CreateCreativeTemplate for application/json ContentType.
-type CreateCreativeTemplateJSONRequestBody = CreateCreativeTemplateJSONBody
-
-// UpdateCreativeTemplateJSONRequestBody defines body for UpdateCreativeTemplate for application/json ContentType.
-type UpdateCreativeTemplateJSONRequestBody = UpdateCreativeTemplateJSONBody
+type UpdateZoneJSONRequestBody UpdateZoneJSONBody
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -936,12 +372,6 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetAd request
-	GetAd(ctx context.Context, adId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetAdTrackingUrls request
-	GetAdTrackingUrls(ctx context.Context, adId int32, params *GetAdTrackingUrlsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
 	// ListAdTypes request
 	ListAdTypes(ctx context.Context, params *ListAdTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -951,61 +381,7 @@ type ClientInterface interface {
 	CreateAdType(ctx context.Context, body CreateAdTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteAdType request
-	DeleteAdType(ctx context.Context, adTypeId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListAdvertisers request
-	ListAdvertisers(ctx context.Context, params *ListAdvertisersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateAdvertiser request with any body
-	CreateAdvertiserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateAdvertiser(ctx context.Context, body CreateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// SearchAdvertisers request with any body
-	SearchAdvertisersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	SearchAdvertisersWithFormdataBody(ctx context.Context, body SearchAdvertisersFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListCreativesForAdvertiser request
-	ListCreativesForAdvertiser(ctx context.Context, advertiserId int32, params *ListCreativesForAdvertiserParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetAdvertiser request
-	GetAdvertiser(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateAdvertiser request with any body
-	UpdateAdvertiserWithBody(ctx context.Context, advertiserId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateAdvertiser(ctx context.Context, advertiserId int, body UpdateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetTrackingCode request
-	GetTrackingCode(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListCampaigns request
-	ListCampaigns(ctx context.Context, params *ListCampaignsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateCampaign request with any body
-	CreateCampaignWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateCampaign(ctx context.Context, body CreateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// SearchCampaigns request with any body
-	SearchCampaignsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	SearchCampaignsWithFormdataBody(ctx context.Context, body SearchCampaignsFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetCampaign request
-	GetCampaign(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateCampaign request with any body
-	UpdateCampaignWithBody(ctx context.Context, campaignId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateCampaign(ctx context.Context, campaignId int, body UpdateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListFlightsForCampaign request
-	ListFlightsForCampaign(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetFlightCategories request
-	GetFlightCategories(ctx context.Context, params *GetFlightCategoriesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteAdType(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListChannels request
 	ListChannels(ctx context.Context, params *ListChannelsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1015,36 +391,36 @@ type ClientInterface interface {
 
 	CreateChannel(ctx context.Context, body CreateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetChannel request
-	GetChannel(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListForChannelAdType request
+	ListForChannelAdType(ctx context.Context, channelId int32, params *ListForChannelAdTypeParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// UpdateChannel request with any body
-	UpdateChannelWithBody(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateForChannelAdType request with any body
+	CreateForChannelAdTypeWithBody(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateChannel(ctx context.Context, channelId int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateForChannelAdType(ctx context.Context, channelId int32, body CreateForChannelAdTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAdTypesForChannel request
-	ListAdTypesForChannel(ctx context.Context, channelId int32, params *ListAdTypesForChannelParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateAdTypeForChannel request with any body
-	CreateAdTypeForChannelWithBody(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateAdTypeForChannel(ctx context.Context, channelId int32, body CreateAdTypeForChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteAdTypeForChannel request
-	DeleteAdTypeForChannel(ctx context.Context, channelId int32, adTypeId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteChannel request
-	DeleteChannel(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetPrioritiesForChannel request
-	GetPrioritiesForChannel(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteForChannelAdType request
+	DeleteForChannelAdType(ctx context.Context, channelId int32, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetChannelSiteMap request
 	GetChannelSiteMap(ctx context.Context, channelId int32, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteChannelSiteMap request
 	DeleteChannelSiteMap(ctx context.Context, channelId int32, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetChannel request
+	GetChannel(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateChannel request with any body
+	UpdateChannelWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateChannel(ctx context.Context, id int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteChannel request
+	DeleteChannel(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetPrioritiesChannel request
+	GetPrioritiesChannel(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListChannelSiteMaps request
 	ListChannelSiteMaps(ctx context.Context, params *ListChannelSiteMapsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1059,130 +435,11 @@ type ClientInterface interface {
 
 	UpdateChannelSiteMap(ctx context.Context, body UpdateChannelSiteMapJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListChannelsForSite request
-	ListChannelsForSite(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListChannelsForSiteChannelSiteMap request
+	ListChannelsForSiteChannelSiteMap(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListCountries request
-	ListCountries(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListRegionsForCountry request
-	ListRegionsForCountry(ctx context.Context, countryCode string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateCreative request with any body
-	CreateCreativeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateCreative(ctx context.Context, body CreateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetCreative request
-	GetCreative(ctx context.Context, creativeId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateCreative request with any body
-	UpdateCreativeWithBody(ctx context.Context, creativeId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateCreative(ctx context.Context, creativeId int32, body UpdateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UploadCreativeImage request with any body
-	UploadCreativeImageWithBody(ctx context.Context, creativeId int32, params *UploadCreativeImageParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FilterFlights request
-	FilterFlights(ctx context.Context, params *FilterFlightsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// FilterSites request
-	FilterSites(ctx context.Context, params *FilterSitesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListFlights request
-	ListFlights(ctx context.Context, params *ListFlightsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateFlight request with any body
-	CreateFlightWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateFlight(ctx context.Context, body CreateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetFlight request
-	GetFlight(ctx context.Context, flightId int, params *GetFlightParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateFlight request with any body
-	UpdateFlightWithBody(ctx context.Context, flightId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateFlight(ctx context.Context, flightId int, body UpdateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetFlightCategoriesForFlight request
-	GetFlightCategoriesForFlight(ctx context.Context, flightId int32, params *GetFlightCategoriesForFlightParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateFlightCategory request with any body
-	CreateFlightCategoryWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateFlightCategory(ctx context.Context, flightId int32, body CreateFlightCategoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteFlightCategory request
-	DeleteFlightCategory(ctx context.Context, flightId int32, flightCategoryId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateAd request with any body
-	CreateAdWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateAd(ctx context.Context, flightId int32, body CreateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateAd request with any body
-	UpdateAdWithBody(ctx context.Context, flightId int32, adId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateAd(ctx context.Context, flightId int32, adId int32, body UpdateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListAdsForFlight request
-	ListAdsForFlight(ctx context.Context, flightId int32, params *ListAdsForFlightParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateGeoTarget request with any body
-	CreateGeoTargetWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateGeoTarget(ctx context.Context, flightId int32, body CreateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetGeoTarget request
-	GetGeoTarget(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateGeoTarget request with any body
-	UpdateGeoTargetWithBody(ctx context.Context, flightId int32, locationId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateGeoTarget(ctx context.Context, flightId int32, locationId int32, body UpdateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteGeoTarget request
-	DeleteGeoTarget(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateSiteZoneTargeting request with any body
-	CreateSiteZoneTargetingWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateSiteZoneTargeting(ctx context.Context, flightId int32, body CreateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetSiteZoneTargeting request
-	GetSiteZoneTargeting(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateSiteZoneTargeting request with any body
-	UpdateSiteZoneTargetingWithBody(ctx context.Context, flightId int32, siteZoneTargetingId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateSiteZoneTargeting(ctx context.Context, flightId int32, siteZoneTargetingId int32, body UpdateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeleteSiteZoneTargeting request
-	DeleteSiteZoneTargeting(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListPriorities request
-	ListPriorities(ctx context.Context, params *ListPrioritiesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreatePriority request with any body
-	CreatePriorityWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreatePriority(ctx context.Context, body CreatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetPriority request
-	GetPriority(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdatePriority request with any body
-	UpdatePriorityWithBody(ctx context.Context, priorityId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdatePriority(ctx context.Context, priorityId int32, body UpdatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// DeletePriority request
-	DeletePriority(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListMetroCodesInRegion request
-	ListMetroCodesInRegion(ctx context.Context, regionCode string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// FilterSite request
+	FilterSite(ctx context.Context, params *FilterSiteParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListSites request
 	ListSites(ctx context.Context, params *ListSitesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1193,12 +450,12 @@ type ClientInterface interface {
 	CreateSite(ctx context.Context, body CreateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetSite request
-	GetSite(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetSite(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateSite request with any body
-	UpdateSiteWithBody(ctx context.Context, siteId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateSiteWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateSite(ctx context.Context, siteId int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateSite(ctx context.Context, id int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListZones request
 	ListZones(ctx context.Context, params *ListZonesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -1209,52 +466,12 @@ type ClientInterface interface {
 	CreateZone(ctx context.Context, body CreateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetZone request
-	GetZone(ctx context.Context, zoneId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+	GetZone(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdateZone request with any body
-	UpdateZoneWithBody(ctx context.Context, zoneId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateZoneWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdateZone(ctx context.Context, zoneId int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// ListCreativeTemplates request
-	ListCreativeTemplates(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// CreateCreativeTemplate request with any body
-	CreateCreativeTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	CreateCreativeTemplate(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// GetCreativeTemplate request
-	GetCreativeTemplate(ctx context.Context, creativeTemplateId int32, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// UpdateCreativeTemplate request with any body
-	UpdateCreativeTemplateWithBody(ctx context.Context, creativeTemplateId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	UpdateCreativeTemplate(ctx context.Context, creativeTemplateId int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
-}
-
-func (c *Client) GetAd(ctx context.Context, adId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAdRequest(c.Server, adId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetAdTrackingUrls(ctx context.Context, adId int32, params *GetAdTrackingUrlsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAdTrackingUrlsRequest(c.Server, adId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
+	UpdateZone(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListAdTypes(ctx context.Context, params *ListAdTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -1293,248 +510,8 @@ func (c *Client) CreateAdType(ctx context.Context, body CreateAdTypeJSONRequestB
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAdType(ctx context.Context, adTypeId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAdTypeRequest(c.Server, adTypeId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListAdvertisers(ctx context.Context, params *ListAdvertisersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListAdvertisersRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateAdvertiserWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAdvertiserRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateAdvertiser(ctx context.Context, body CreateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAdvertiserRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SearchAdvertisersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSearchAdvertisersRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SearchAdvertisersWithFormdataBody(ctx context.Context, body SearchAdvertisersFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSearchAdvertisersRequestWithFormdataBody(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListCreativesForAdvertiser(ctx context.Context, advertiserId int32, params *ListCreativesForAdvertiserParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListCreativesForAdvertiserRequest(c.Server, advertiserId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetAdvertiser(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAdvertiserRequest(c.Server, advertiserId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateAdvertiserWithBody(ctx context.Context, advertiserId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAdvertiserRequestWithBody(c.Server, advertiserId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateAdvertiser(ctx context.Context, advertiserId int, body UpdateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAdvertiserRequest(c.Server, advertiserId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetTrackingCode(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetTrackingCodeRequest(c.Server, advertiserId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListCampaigns(ctx context.Context, params *ListCampaignsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListCampaignsRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateCampaignWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateCampaignRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateCampaign(ctx context.Context, body CreateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateCampaignRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SearchCampaignsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSearchCampaignsRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) SearchCampaignsWithFormdataBody(ctx context.Context, body SearchCampaignsFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSearchCampaignsRequestWithFormdataBody(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetCampaign(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetCampaignRequest(c.Server, campaignId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateCampaignWithBody(ctx context.Context, campaignId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCampaignRequestWithBody(c.Server, campaignId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateCampaign(ctx context.Context, campaignId int, body UpdateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCampaignRequest(c.Server, campaignId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListFlightsForCampaign(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListFlightsForCampaignRequest(c.Server, campaignId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetFlightCategories(ctx context.Context, params *GetFlightCategoriesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetFlightCategoriesRequest(c.Server, params)
+func (c *Client) DeleteAdType(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAdTypeRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -1581,8 +558,8 @@ func (c *Client) CreateChannel(ctx context.Context, body CreateChannelJSONReques
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetChannel(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetChannelRequest(c.Server, channelId)
+func (c *Client) ListForChannelAdType(ctx context.Context, channelId int32, params *ListForChannelAdTypeParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListForChannelAdTypeRequest(c.Server, channelId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -1593,8 +570,8 @@ func (c *Client) GetChannel(ctx context.Context, channelId int32, reqEditors ...
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateChannelWithBody(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateChannelRequestWithBody(c.Server, channelId, contentType, body)
+func (c *Client) CreateForChannelAdTypeWithBody(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateForChannelAdTypeRequestWithBody(c.Server, channelId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1605,8 +582,8 @@ func (c *Client) UpdateChannelWithBody(ctx context.Context, channelId int32, con
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateChannel(ctx context.Context, channelId int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateChannelRequest(c.Server, channelId, body)
+func (c *Client) CreateForChannelAdType(ctx context.Context, channelId int32, body CreateForChannelAdTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateForChannelAdTypeRequest(c.Server, channelId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1617,68 +594,8 @@ func (c *Client) UpdateChannel(ctx context.Context, channelId int32, body Update
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListAdTypesForChannel(ctx context.Context, channelId int32, params *ListAdTypesForChannelParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListAdTypesForChannelRequest(c.Server, channelId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateAdTypeForChannelWithBody(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAdTypeForChannelRequestWithBody(c.Server, channelId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateAdTypeForChannel(ctx context.Context, channelId int32, body CreateAdTypeForChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAdTypeForChannelRequest(c.Server, channelId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteAdTypeForChannel(ctx context.Context, channelId int32, adTypeId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAdTypeForChannelRequest(c.Server, channelId, adTypeId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteChannel(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteChannelRequest(c.Server, channelId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetPrioritiesForChannel(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPrioritiesForChannelRequest(c.Server, channelId)
+func (c *Client) DeleteForChannelAdType(ctx context.Context, channelId int32, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteForChannelAdTypeRequest(c.Server, channelId, id)
 	if err != nil {
 		return nil, err
 	}
@@ -1703,6 +620,66 @@ func (c *Client) GetChannelSiteMap(ctx context.Context, channelId int32, siteId 
 
 func (c *Client) DeleteChannelSiteMap(ctx context.Context, channelId int32, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDeleteChannelSiteMapRequest(c.Server, channelId, siteId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetChannel(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetChannelRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateChannelWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateChannelRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateChannel(ctx context.Context, id int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateChannelRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteChannel(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteChannelRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetPrioritiesChannel(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPrioritiesChannelRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -1773,8 +750,8 @@ func (c *Client) UpdateChannelSiteMap(ctx context.Context, body UpdateChannelSit
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListChannelsForSite(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListChannelsForSiteRequest(c.Server, siteId)
+func (c *Client) ListChannelsForSiteChannelSiteMap(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListChannelsForSiteChannelSiteMapRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -1785,536 +762,8 @@ func (c *Client) ListChannelsForSite(ctx context.Context, siteId int32, reqEdito
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListCountries(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListCountriesRequest(c.Server)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListRegionsForCountry(ctx context.Context, countryCode string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListRegionsForCountryRequest(c.Server, countryCode)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateCreativeWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateCreativeRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateCreative(ctx context.Context, body CreateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateCreativeRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetCreative(ctx context.Context, creativeId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetCreativeRequest(c.Server, creativeId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateCreativeWithBody(ctx context.Context, creativeId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCreativeRequestWithBody(c.Server, creativeId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateCreative(ctx context.Context, creativeId int32, body UpdateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCreativeRequest(c.Server, creativeId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UploadCreativeImageWithBody(ctx context.Context, creativeId int32, params *UploadCreativeImageParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUploadCreativeImageRequestWithBody(c.Server, creativeId, params, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FilterFlights(ctx context.Context, params *FilterFlightsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFilterFlightsRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) FilterSites(ctx context.Context, params *FilterSitesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewFilterSitesRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListFlights(ctx context.Context, params *ListFlightsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListFlightsRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateFlightWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateFlightRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateFlight(ctx context.Context, body CreateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateFlightRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetFlight(ctx context.Context, flightId int, params *GetFlightParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetFlightRequest(c.Server, flightId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateFlightWithBody(ctx context.Context, flightId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateFlightRequestWithBody(c.Server, flightId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateFlight(ctx context.Context, flightId int, body UpdateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateFlightRequest(c.Server, flightId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetFlightCategoriesForFlight(ctx context.Context, flightId int32, params *GetFlightCategoriesForFlightParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetFlightCategoriesForFlightRequest(c.Server, flightId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateFlightCategoryWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateFlightCategoryRequestWithBody(c.Server, flightId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateFlightCategory(ctx context.Context, flightId int32, body CreateFlightCategoryJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateFlightCategoryRequest(c.Server, flightId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteFlightCategory(ctx context.Context, flightId int32, flightCategoryId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteFlightCategoryRequest(c.Server, flightId, flightCategoryId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateAdWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAdRequestWithBody(c.Server, flightId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateAd(ctx context.Context, flightId int32, body CreateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAdRequest(c.Server, flightId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateAdWithBody(ctx context.Context, flightId int32, adId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAdRequestWithBody(c.Server, flightId, adId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateAd(ctx context.Context, flightId int32, adId int32, body UpdateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateAdRequest(c.Server, flightId, adId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListAdsForFlight(ctx context.Context, flightId int32, params *ListAdsForFlightParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListAdsForFlightRequest(c.Server, flightId, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateGeoTargetWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateGeoTargetRequestWithBody(c.Server, flightId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateGeoTarget(ctx context.Context, flightId int32, body CreateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateGeoTargetRequest(c.Server, flightId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetGeoTarget(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetGeoTargetRequest(c.Server, flightId, locationId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateGeoTargetWithBody(ctx context.Context, flightId int32, locationId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateGeoTargetRequestWithBody(c.Server, flightId, locationId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateGeoTarget(ctx context.Context, flightId int32, locationId int32, body UpdateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateGeoTargetRequest(c.Server, flightId, locationId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteGeoTarget(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteGeoTargetRequest(c.Server, flightId, locationId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateSiteZoneTargetingWithBody(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSiteZoneTargetingRequestWithBody(c.Server, flightId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateSiteZoneTargeting(ctx context.Context, flightId int32, body CreateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSiteZoneTargetingRequest(c.Server, flightId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetSiteZoneTargeting(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSiteZoneTargetingRequest(c.Server, flightId, siteZoneTargetingId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateSiteZoneTargetingWithBody(ctx context.Context, flightId int32, siteZoneTargetingId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateSiteZoneTargetingRequestWithBody(c.Server, flightId, siteZoneTargetingId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateSiteZoneTargeting(ctx context.Context, flightId int32, siteZoneTargetingId int32, body UpdateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateSiteZoneTargetingRequest(c.Server, flightId, siteZoneTargetingId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeleteSiteZoneTargeting(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSiteZoneTargetingRequest(c.Server, flightId, siteZoneTargetingId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListPriorities(ctx context.Context, params *ListPrioritiesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListPrioritiesRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreatePriorityWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePriorityRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreatePriority(ctx context.Context, body CreatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePriorityRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetPriority(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPriorityRequest(c.Server, priorityId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdatePriorityWithBody(ctx context.Context, priorityId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdatePriorityRequestWithBody(c.Server, priorityId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdatePriority(ctx context.Context, priorityId int32, body UpdatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdatePriorityRequest(c.Server, priorityId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) DeletePriority(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeletePriorityRequest(c.Server, priorityId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) ListMetroCodesInRegion(ctx context.Context, regionCode string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListMetroCodesInRegionRequest(c.Server, regionCode)
+func (c *Client) FilterSite(ctx context.Context, params *FilterSiteParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFilterSiteRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -2361,8 +810,8 @@ func (c *Client) CreateSite(ctx context.Context, body CreateSiteJSONRequestBody,
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetSite(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetSiteRequest(c.Server, siteId)
+func (c *Client) GetSite(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetSiteRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -2373,8 +822,8 @@ func (c *Client) GetSite(ctx context.Context, siteId int32, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateSiteWithBody(ctx context.Context, siteId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateSiteRequestWithBody(c.Server, siteId, contentType, body)
+func (c *Client) UpdateSiteWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSiteRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2385,8 +834,8 @@ func (c *Client) UpdateSiteWithBody(ctx context.Context, siteId int32, contentTy
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateSite(ctx context.Context, siteId int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateSiteRequest(c.Server, siteId, body)
+func (c *Client) UpdateSite(ctx context.Context, id int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateSiteRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2433,8 +882,8 @@ func (c *Client) CreateZone(ctx context.Context, body CreateZoneJSONRequestBody,
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetZone(ctx context.Context, zoneId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetZoneRequest(c.Server, zoneId)
+func (c *Client) GetZone(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetZoneRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -2445,8 +894,8 @@ func (c *Client) GetZone(ctx context.Context, zoneId int32, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateZoneWithBody(ctx context.Context, zoneId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateZoneRequestWithBody(c.Server, zoneId, contentType, body)
+func (c *Client) UpdateZoneWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateZoneRequestWithBody(c.Server, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2457,8 +906,8 @@ func (c *Client) UpdateZoneWithBody(ctx context.Context, zoneId int32, contentTy
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdateZone(ctx context.Context, zoneId int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateZoneRequest(c.Server, zoneId, body)
+func (c *Client) UpdateZone(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateZoneRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2467,198 +916,6 @@ func (c *Client) UpdateZone(ctx context.Context, zoneId int32, body UpdateZoneJS
 		return nil, err
 	}
 	return c.Client.Do(req)
-}
-
-func (c *Client) ListCreativeTemplates(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListCreativeTemplatesRequest(c.Server, params)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateCreativeTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateCreativeTemplateRequestWithBody(c.Server, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) CreateCreativeTemplate(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateCreativeTemplateRequest(c.Server, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) GetCreativeTemplate(ctx context.Context, creativeTemplateId int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetCreativeTemplateRequest(c.Server, creativeTemplateId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateCreativeTemplateWithBody(ctx context.Context, creativeTemplateId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCreativeTemplateRequestWithBody(c.Server, creativeTemplateId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-func (c *Client) UpdateCreativeTemplate(ctx context.Context, creativeTemplateId int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdateCreativeTemplateRequest(c.Server, creativeTemplateId, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// NewGetAdRequest generates requests for GetAd
-func NewGetAdRequest(server string, adId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "adId", runtime.ParamLocationPath, adId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/ad/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetAdTrackingUrlsRequest generates requests for GetAdTrackingUrls
-func NewGetAdTrackingUrlsRequest(server string, adId int32, params *GetAdTrackingUrlsParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "adId", runtime.ParamLocationPath, adId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/ad/%s/tracking-urls", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.SiteId != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "siteId", runtime.ParamLocationQuery, *params.SiteId); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.ZoneId != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "zoneId", runtime.ParamLocationQuery, *params.ZoneId); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Keywords != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "keywords", runtime.ParamLocationQuery, *params.Keywords); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
 }
 
 // NewListAdTypesRequest generates requests for ListAdTypes
@@ -2765,12 +1022,12 @@ func NewCreateAdTypeRequestWithBody(server string, contentType string, body io.R
 }
 
 // NewDeleteAdTypeRequest generates requests for DeleteAdType
-func NewDeleteAdTypeRequest(server string, adTypeId int32) (*http.Request, error) {
+func NewDeleteAdTypeRequest(server string, id int32) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "adTypeId", runtime.ParamLocationPath, adTypeId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -2789,655 +1046,6 @@ func NewDeleteAdTypeRequest(server string, adTypeId int32) (*http.Request, error
 	if err != nil {
 		return nil, err
 	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewListAdvertisersRequest generates requests for ListAdvertisers
-func NewListAdvertisersRequest(server string, params *ListAdvertisersParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateAdvertiserRequest calls the generic CreateAdvertiser builder with application/json body
-func NewCreateAdvertiserRequest(server string, body CreateAdvertiserJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateAdvertiserRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewCreateAdvertiserRequestWithBody generates requests for CreateAdvertiser with any type of body
-func NewCreateAdvertiserRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewSearchAdvertisersRequestWithFormdataBody calls the generic SearchAdvertisers builder with application/x-www-form-urlencoded body
-func NewSearchAdvertisersRequestWithFormdataBody(server string, body SearchAdvertisersFormdataRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	bodyStr, err := runtime.MarshalForm(body, nil)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = strings.NewReader(bodyStr.Encode())
-	return NewSearchAdvertisersRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
-}
-
-// NewSearchAdvertisersRequestWithBody generates requests for SearchAdvertisers with any type of body
-func NewSearchAdvertisersRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser/search")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewListCreativesForAdvertiserRequest generates requests for ListCreativesForAdvertiser
-func NewListCreativesForAdvertiserRequest(server string, advertiserId int32, params *ListCreativesForAdvertiserParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "AdvertiserId", runtime.ParamLocationPath, advertiserId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser/%s/creatives", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetAdvertiserRequest generates requests for GetAdvertiser
-func NewGetAdvertiserRequest(server string, advertiserId int) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "advertiserId", runtime.ParamLocationPath, advertiserId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateAdvertiserRequest calls the generic UpdateAdvertiser builder with application/json body
-func NewUpdateAdvertiserRequest(server string, advertiserId int, body UpdateAdvertiserJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateAdvertiserRequestWithBody(server, advertiserId, "application/json", bodyReader)
-}
-
-// NewUpdateAdvertiserRequestWithBody generates requests for UpdateAdvertiser with any type of body
-func NewUpdateAdvertiserRequestWithBody(server string, advertiserId int, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "advertiserId", runtime.ParamLocationPath, advertiserId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetTrackingCodeRequest generates requests for GetTrackingCode
-func NewGetTrackingCodeRequest(server string, advertiserId int) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "advertiserId", runtime.ParamLocationPath, advertiserId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/advertiser/%s/trackingCode", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewListCampaignsRequest generates requests for ListCampaigns
-func NewListCampaignsRequest(server string, params *ListCampaignsParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/campaign")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateCampaignRequest calls the generic CreateCampaign builder with application/json body
-func NewCreateCampaignRequest(server string, body CreateCampaignJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateCampaignRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewCreateCampaignRequestWithBody generates requests for CreateCampaign with any type of body
-func NewCreateCampaignRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/campaign")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewSearchCampaignsRequestWithFormdataBody calls the generic SearchCampaigns builder with application/x-www-form-urlencoded body
-func NewSearchCampaignsRequestWithFormdataBody(server string, body SearchCampaignsFormdataRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	bodyStr, err := runtime.MarshalForm(body, nil)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = strings.NewReader(bodyStr.Encode())
-	return NewSearchCampaignsRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
-}
-
-// NewSearchCampaignsRequestWithBody generates requests for SearchCampaigns with any type of body
-func NewSearchCampaignsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/campaign/search")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetCampaignRequest generates requests for GetCampaign
-func NewGetCampaignRequest(server string, campaignId int) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "campaignId", runtime.ParamLocationPath, campaignId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/campaign/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateCampaignRequest calls the generic UpdateCampaign builder with application/json body
-func NewUpdateCampaignRequest(server string, campaignId int, body UpdateCampaignJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateCampaignRequestWithBody(server, campaignId, "application/json", bodyReader)
-}
-
-// NewUpdateCampaignRequestWithBody generates requests for UpdateCampaign with any type of body
-func NewUpdateCampaignRequestWithBody(server string, campaignId int, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "campaignId", runtime.ParamLocationPath, campaignId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/campaign/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewListFlightsForCampaignRequest generates requests for ListFlightsForCampaign
-func NewListFlightsForCampaignRequest(server string, campaignId int) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "campaignId", runtime.ParamLocationPath, campaignId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/campaign/%s/flight", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetFlightCategoriesRequest generates requests for GetFlightCategories
-func NewGetFlightCategoriesRequest(server string, params *GetFlightCategoriesParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/categories")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
@@ -3550,89 +1158,8 @@ func NewCreateChannelRequestWithBody(server string, contentType string, body io.
 	return req, nil
 }
 
-// NewGetChannelRequest generates requests for GetChannel
-func NewGetChannelRequest(server string, channelId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "channelId", runtime.ParamLocationPath, channelId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/channel/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateChannelRequest calls the generic UpdateChannel builder with application/json body
-func NewUpdateChannelRequest(server string, channelId int32, body UpdateChannelJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateChannelRequestWithBody(server, channelId, "application/json", bodyReader)
-}
-
-// NewUpdateChannelRequestWithBody generates requests for UpdateChannel with any type of body
-func NewUpdateChannelRequestWithBody(server string, channelId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "channelId", runtime.ParamLocationPath, channelId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/channel/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewListAdTypesForChannelRequest generates requests for ListAdTypesForChannel
-func NewListAdTypesForChannelRequest(server string, channelId int32, params *ListAdTypesForChannelParams) (*http.Request, error) {
+// NewListForChannelAdTypeRequest generates requests for ListForChannelAdType
+func NewListForChannelAdTypeRequest(server string, channelId int32, params *ListForChannelAdTypeParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3701,19 +1228,19 @@ func NewListAdTypesForChannelRequest(server string, channelId int32, params *Lis
 	return req, nil
 }
 
-// NewCreateAdTypeForChannelRequest calls the generic CreateAdTypeForChannel builder with application/json body
-func NewCreateAdTypeForChannelRequest(server string, channelId int32, body CreateAdTypeForChannelJSONRequestBody) (*http.Request, error) {
+// NewCreateForChannelAdTypeRequest calls the generic CreateForChannelAdType builder with application/json body
+func NewCreateForChannelAdTypeRequest(server string, channelId int32, body CreateForChannelAdTypeJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateAdTypeForChannelRequestWithBody(server, channelId, "application/json", bodyReader)
+	return NewCreateForChannelAdTypeRequestWithBody(server, channelId, "application/json", bodyReader)
 }
 
-// NewCreateAdTypeForChannelRequestWithBody generates requests for CreateAdTypeForChannel with any type of body
-func NewCreateAdTypeForChannelRequestWithBody(server string, channelId int32, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateForChannelAdTypeRequestWithBody generates requests for CreateForChannelAdType with any type of body
+func NewCreateForChannelAdTypeRequestWithBody(server string, channelId int32, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3748,8 +1275,8 @@ func NewCreateAdTypeForChannelRequestWithBody(server string, channelId int32, co
 	return req, nil
 }
 
-// NewDeleteAdTypeForChannelRequest generates requests for DeleteAdTypeForChannel
-func NewDeleteAdTypeForChannelRequest(server string, channelId int32, adTypeId int32) (*http.Request, error) {
+// NewDeleteForChannelAdTypeRequest generates requests for DeleteForChannelAdType
+func NewDeleteForChannelAdTypeRequest(server string, channelId int32, id int32) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -3761,7 +1288,7 @@ func NewDeleteAdTypeForChannelRequest(server string, channelId int32, adTypeId i
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "adTypeId", runtime.ParamLocationPath, adTypeId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -3772,74 +1299,6 @@ func NewDeleteAdTypeForChannelRequest(server string, channelId int32, adTypeId i
 	}
 
 	operationPath := fmt.Sprintf("/v1/channel/%s/adtypes/%s/delete", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewDeleteChannelRequest generates requests for DeleteChannel
-func NewDeleteChannelRequest(server string, channelId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "channelId", runtime.ParamLocationPath, channelId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/channel/%s/delete", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetPrioritiesForChannelRequest generates requests for GetPrioritiesForChannel
-func NewGetPrioritiesForChannelRequest(server string, channelId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "channelId", runtime.ParamLocationPath, channelId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/channel/%s/priorities", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -3922,6 +1381,155 @@ func NewDeleteChannelSiteMapRequest(server string, channelId int32, siteId int32
 	}
 
 	operationPath := fmt.Sprintf("/v1/channel/%s/site/%s/delete", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetChannelRequest generates requests for GetChannel
+func NewGetChannelRequest(server string, id int32) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/channel/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateChannelRequest calls the generic UpdateChannel builder with application/json body
+func NewUpdateChannelRequest(server string, id int32, body UpdateChannelJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateChannelRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateChannelRequestWithBody generates requests for UpdateChannel with any type of body
+func NewUpdateChannelRequestWithBody(server string, id int32, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/channel/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteChannelRequest generates requests for DeleteChannel
+func NewDeleteChannelRequest(server string, id int32) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/channel/%s/delete", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetPrioritiesChannelRequest generates requests for GetPrioritiesChannel
+func NewGetPrioritiesChannelRequest(server string, id int32) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v1/channel/%s/priorities", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -4082,8 +1690,8 @@ func NewUpdateChannelSiteMapRequestWithBody(server string, contentType string, b
 	return req, nil
 }
 
-// NewListChannelsForSiteRequest generates requests for ListChannelsForSite
-func NewListChannelsForSiteRequest(server string, siteId int32) (*http.Request, error) {
+// NewListChannelsForSiteChannelSiteMapRequest generates requests for ListChannelsForSiteChannelSiteMap
+func NewListChannelsForSiteChannelSiteMapRequest(server string, siteId int32) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -4116,437 +1724,8 @@ func NewListChannelsForSiteRequest(server string, siteId int32) (*http.Request, 
 	return req, nil
 }
 
-// NewListCountriesRequest generates requests for ListCountries
-func NewListCountriesRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/countries")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewListRegionsForCountryRequest generates requests for ListRegionsForCountry
-func NewListRegionsForCountryRequest(server string, countryCode string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "countryCode", runtime.ParamLocationPath, countryCode)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/country/%s/regions?version=2", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateCreativeRequest calls the generic CreateCreative builder with application/json body
-func NewCreateCreativeRequest(server string, body CreateCreativeJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateCreativeRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewCreateCreativeRequestWithBody generates requests for CreateCreative with any type of body
-func NewCreateCreativeRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/creative")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetCreativeRequest generates requests for GetCreative
-func NewGetCreativeRequest(server string, creativeId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "CreativeId", runtime.ParamLocationPath, creativeId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/creative/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateCreativeRequest calls the generic UpdateCreative builder with application/json body
-func NewUpdateCreativeRequest(server string, creativeId int32, body UpdateCreativeJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateCreativeRequestWithBody(server, creativeId, "application/json", bodyReader)
-}
-
-// NewUpdateCreativeRequestWithBody generates requests for UpdateCreative with any type of body
-func NewUpdateCreativeRequestWithBody(server string, creativeId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "CreativeId", runtime.ParamLocationPath, creativeId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/creative/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewUploadCreativeImageRequestWithBody generates requests for UploadCreativeImage with any type of body
-func NewUploadCreativeImageRequestWithBody(server string, creativeId int32, params *UploadCreativeImageParams, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "CreativeId", runtime.ParamLocationPath, creativeId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/creative/%s/upload", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.SizeOverride != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sizeOverride", runtime.ParamLocationQuery, *params.SizeOverride); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.FieldName != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "fieldName", runtime.ParamLocationQuery, *params.FieldName); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewFilterFlightsRequest generates requests for FilterFlights
-func NewFilterFlightsRequest(server string, params *FilterFlightsParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/fast/flight")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.IsActive != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "isActive", runtime.ParamLocationQuery, *params.IsActive); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.IsArchived != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "isArchived", runtime.ParamLocationQuery, *params.IsArchived); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.BeforeStartDate != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "beforeStartDate", runtime.ParamLocationQuery, *params.BeforeStartDate); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.AfterStartDate != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "afterStartDate", runtime.ParamLocationQuery, *params.AfterStartDate); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.BeforeEndDate != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "beforeEndDate", runtime.ParamLocationQuery, *params.BeforeEndDate); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.AfterEndDate != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "afterEndDate", runtime.ParamLocationQuery, *params.AfterEndDate); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.NoEndDate != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "NoEndDate", runtime.ParamLocationQuery, *params.NoEndDate); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Name != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "name", runtime.ParamLocationQuery, *params.Name); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.NameContains != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "nameContains", runtime.ParamLocationQuery, *params.NameContains); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewFilterSitesRequest generates requests for FilterSites
-func NewFilterSitesRequest(server string, params *FilterSitesParams) (*http.Request, error) {
+// NewFilterSiteRequest generates requests for FilterSite
+func NewFilterSiteRequest(server string, params *FilterSiteParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -4599,1189 +1778,6 @@ func NewFilterSitesRequest(server string, params *FilterSitesParams) (*http.Requ
 	}
 
 	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewListFlightsRequest generates requests for ListFlights
-func NewListFlightsRequest(server string, params *ListFlightsParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.IsArchived != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "isArchived", runtime.ParamLocationQuery, *params.IsArchived); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.IsActive != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "isActive", runtime.ParamLocationQuery, *params.IsActive); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateFlightRequest calls the generic CreateFlight builder with application/json body
-func NewCreateFlightRequest(server string, body CreateFlightJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateFlightRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewCreateFlightRequestWithBody generates requests for CreateFlight with any type of body
-func NewCreateFlightRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetFlightRequest generates requests for GetFlight
-func NewGetFlightRequest(server string, flightId int, params *GetFlightParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.ExcludeAds != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "excludeAds", runtime.ParamLocationQuery, *params.ExcludeAds); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateFlightRequest calls the generic UpdateFlight builder with application/json body
-func NewUpdateFlightRequest(server string, flightId int, body UpdateFlightJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateFlightRequestWithBody(server, flightId, "application/json", bodyReader)
-}
-
-// NewUpdateFlightRequestWithBody generates requests for UpdateFlight with any type of body
-func NewUpdateFlightRequestWithBody(server string, flightId int, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetFlightCategoriesForFlightRequest generates requests for GetFlightCategoriesForFlight
-func NewGetFlightCategoriesForFlightRequest(server string, flightId int32, params *GetFlightCategoriesForFlightParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/categories", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateFlightCategoryRequest calls the generic CreateFlightCategory builder with application/json body
-func NewCreateFlightCategoryRequest(server string, flightId int32, body CreateFlightCategoryJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateFlightCategoryRequestWithBody(server, flightId, "application/json", bodyReader)
-}
-
-// NewCreateFlightCategoryRequestWithBody generates requests for CreateFlightCategory with any type of body
-func NewCreateFlightCategoryRequestWithBody(server string, flightId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/category", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewDeleteFlightCategoryRequest generates requests for DeleteFlightCategory
-func NewDeleteFlightCategoryRequest(server string, flightId int32, flightCategoryId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "flightCategoryId", runtime.ParamLocationPath, flightCategoryId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/category/%s/delete", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateAdRequest calls the generic CreateAd builder with application/json body
-func NewCreateAdRequest(server string, flightId int32, body CreateAdJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateAdRequestWithBody(server, flightId, "application/json", bodyReader)
-}
-
-// NewCreateAdRequestWithBody generates requests for CreateAd with any type of body
-func NewCreateAdRequestWithBody(server string, flightId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/creative", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewUpdateAdRequest calls the generic UpdateAd builder with application/json body
-func NewUpdateAdRequest(server string, flightId int32, adId int32, body UpdateAdJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateAdRequestWithBody(server, flightId, adId, "application/json", bodyReader)
-}
-
-// NewUpdateAdRequestWithBody generates requests for UpdateAd with any type of body
-func NewUpdateAdRequestWithBody(server string, flightId int32, adId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "adId", runtime.ParamLocationPath, adId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/creative/%s", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewListAdsForFlightRequest generates requests for ListAdsForFlight
-func NewListAdsForFlightRequest(server string, flightId int32, params *ListAdsForFlightParams) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/creatives", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateGeoTargetRequest calls the generic CreateGeoTarget builder with application/json body
-func NewCreateGeoTargetRequest(server string, flightId int32, body CreateGeoTargetJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateGeoTargetRequestWithBody(server, flightId, "application/json", bodyReader)
-}
-
-// NewCreateGeoTargetRequestWithBody generates requests for CreateGeoTarget with any type of body
-func NewCreateGeoTargetRequestWithBody(server string, flightId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/geotargeting", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetGeoTargetRequest generates requests for GetGeoTarget
-func NewGetGeoTargetRequest(server string, flightId int32, locationId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "locationId", runtime.ParamLocationPath, locationId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/geotargeting/%s", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateGeoTargetRequest calls the generic UpdateGeoTarget builder with application/json body
-func NewUpdateGeoTargetRequest(server string, flightId int32, locationId int32, body UpdateGeoTargetJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateGeoTargetRequestWithBody(server, flightId, locationId, "application/json", bodyReader)
-}
-
-// NewUpdateGeoTargetRequestWithBody generates requests for UpdateGeoTarget with any type of body
-func NewUpdateGeoTargetRequestWithBody(server string, flightId int32, locationId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "locationId", runtime.ParamLocationPath, locationId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/geotargeting/%s", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewDeleteGeoTargetRequest generates requests for DeleteGeoTarget
-func NewDeleteGeoTargetRequest(server string, flightId int32, locationId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "locationId", runtime.ParamLocationPath, locationId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/geotargeting/%s/delete", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateSiteZoneTargetingRequest calls the generic CreateSiteZoneTargeting builder with application/json body
-func NewCreateSiteZoneTargetingRequest(server string, flightId int32, body CreateSiteZoneTargetingJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateSiteZoneTargetingRequestWithBody(server, flightId, "application/json", bodyReader)
-}
-
-// NewCreateSiteZoneTargetingRequestWithBody generates requests for CreateSiteZoneTargeting with any type of body
-func NewCreateSiteZoneTargetingRequestWithBody(server string, flightId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/sitezonetargeting", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetSiteZoneTargetingRequest generates requests for GetSiteZoneTargeting
-func NewGetSiteZoneTargetingRequest(server string, flightId int32, siteZoneTargetingId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "siteZoneTargetingId", runtime.ParamLocationPath, siteZoneTargetingId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/sitezonetargeting/%s", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateSiteZoneTargetingRequest calls the generic UpdateSiteZoneTargeting builder with application/json body
-func NewUpdateSiteZoneTargetingRequest(server string, flightId int32, siteZoneTargetingId int32, body UpdateSiteZoneTargetingJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateSiteZoneTargetingRequestWithBody(server, flightId, siteZoneTargetingId, "application/json", bodyReader)
-}
-
-// NewUpdateSiteZoneTargetingRequestWithBody generates requests for UpdateSiteZoneTargeting with any type of body
-func NewUpdateSiteZoneTargetingRequestWithBody(server string, flightId int32, siteZoneTargetingId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "siteZoneTargetingId", runtime.ParamLocationPath, siteZoneTargetingId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/sitezonetargeting/%s", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewDeleteSiteZoneTargetingRequest generates requests for DeleteSiteZoneTargeting
-func NewDeleteSiteZoneTargetingRequest(server string, flightId int32, siteZoneTargetingId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "flightId", runtime.ParamLocationPath, flightId)
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "siteZoneTargetingId", runtime.ParamLocationPath, siteZoneTargetingId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/flight/%s/sitezonetargeting/%s/delete", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewListPrioritiesRequest generates requests for ListPriorities
-func NewListPrioritiesRequest(server string, params *ListPrioritiesParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/priority")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreatePriorityRequest calls the generic CreatePriority builder with application/json body
-func NewCreatePriorityRequest(server string, body CreatePriorityJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreatePriorityRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewCreatePriorityRequestWithBody generates requests for CreatePriority with any type of body
-func NewCreatePriorityRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/priority")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetPriorityRequest generates requests for GetPriority
-func NewGetPriorityRequest(server string, priorityId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "priorityId", runtime.ParamLocationPath, priorityId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/priority/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdatePriorityRequest calls the generic UpdatePriority builder with application/json body
-func NewUpdatePriorityRequest(server string, priorityId int32, body UpdatePriorityJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdatePriorityRequestWithBody(server, priorityId, "application/json", bodyReader)
-}
-
-// NewUpdatePriorityRequestWithBody generates requests for UpdatePriority with any type of body
-func NewUpdatePriorityRequestWithBody(server string, priorityId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "priorityId", runtime.ParamLocationPath, priorityId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/priority/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewDeletePriorityRequest generates requests for DeletePriority
-func NewDeletePriorityRequest(server string, priorityId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "priorityId", runtime.ParamLocationPath, priorityId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/priority/%s/delete", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewListMetroCodesInRegionRequest generates requests for ListMetroCodesInRegion
-func NewListMetroCodesInRegionRequest(server string, regionCode string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "regionCode", runtime.ParamLocationPath, regionCode)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v1/region/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
 
 	req, err := http.NewRequest("GET", queryURL.String(), nil)
 	if err != nil {
@@ -5895,12 +1891,12 @@ func NewCreateSiteRequestWithBody(server string, contentType string, body io.Rea
 }
 
 // NewGetSiteRequest generates requests for GetSite
-func NewGetSiteRequest(server string, siteId int32) (*http.Request, error) {
+func NewGetSiteRequest(server string, id int32) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "siteId", runtime.ParamLocationPath, siteId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -5929,23 +1925,23 @@ func NewGetSiteRequest(server string, siteId int32) (*http.Request, error) {
 }
 
 // NewUpdateSiteRequest calls the generic UpdateSite builder with application/json body
-func NewUpdateSiteRequest(server string, siteId int32, body UpdateSiteJSONRequestBody) (*http.Request, error) {
+func NewUpdateSiteRequest(server string, id int32, body UpdateSiteJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateSiteRequestWithBody(server, siteId, "application/json", bodyReader)
+	return NewUpdateSiteRequestWithBody(server, id, "application/json", bodyReader)
 }
 
 // NewUpdateSiteRequestWithBody generates requests for UpdateSite with any type of body
-func NewUpdateSiteRequestWithBody(server string, siteId int32, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateSiteRequestWithBody(server string, id int32, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "siteId", runtime.ParamLocationPath, siteId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -6079,12 +2075,12 @@ func NewCreateZoneRequestWithBody(server string, contentType string, body io.Rea
 }
 
 // NewGetZoneRequest generates requests for GetZone
-func NewGetZoneRequest(server string, zoneId int32) (*http.Request, error) {
+func NewGetZoneRequest(server string, id int32) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "zoneId", runtime.ParamLocationPath, zoneId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -6113,23 +2109,23 @@ func NewGetZoneRequest(server string, zoneId int32) (*http.Request, error) {
 }
 
 // NewUpdateZoneRequest calls the generic UpdateZone builder with application/json body
-func NewUpdateZoneRequest(server string, zoneId int32, body UpdateZoneJSONRequestBody) (*http.Request, error) {
+func NewUpdateZoneRequest(server string, id int32, body UpdateZoneJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdateZoneRequestWithBody(server, zoneId, "application/json", bodyReader)
+	return NewUpdateZoneRequestWithBody(server, id, "application/json", bodyReader)
 }
 
 // NewUpdateZoneRequestWithBody generates requests for UpdateZone with any type of body
-func NewUpdateZoneRequestWithBody(server string, zoneId int32, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdateZoneRequestWithBody(server string, id int32, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "zoneId", runtime.ParamLocationPath, zoneId)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -6150,190 +2146,6 @@ func NewUpdateZoneRequestWithBody(server string, zoneId int32, contentType strin
 	}
 
 	req, err := http.NewRequest("PUT", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewListCreativeTemplatesRequest generates requests for ListCreativeTemplates
-func NewListCreativeTemplatesRequest(server string, params *ListCreativeTemplatesParams) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v2/creative-templates")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	queryValues := queryURL.Query()
-
-	if params.PageSize != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	if params.Page != nil {
-
-		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
-			return nil, err
-		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
-			return nil, err
-		} else {
-			for k, v := range parsed {
-				for _, v2 := range v {
-					queryValues.Add(k, v2)
-				}
-			}
-		}
-
-	}
-
-	queryURL.RawQuery = queryValues.Encode()
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewCreateCreativeTemplateRequest calls the generic CreateCreativeTemplate builder with application/json body
-func NewCreateCreativeTemplateRequest(server string, body CreateCreativeTemplateJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewCreateCreativeTemplateRequestWithBody(server, "application/json", bodyReader)
-}
-
-// NewCreateCreativeTemplateRequestWithBody generates requests for CreateCreativeTemplate with any type of body
-func NewCreateCreativeTemplateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v2/creative-templates")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
-
-	return req, nil
-}
-
-// NewGetCreativeTemplateRequest generates requests for GetCreativeTemplate
-func NewGetCreativeTemplateRequest(server string, creativeTemplateId int32) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "creativeTemplateId", runtime.ParamLocationPath, creativeTemplateId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v2/creative-templates/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewUpdateCreativeTemplateRequest calls the generic UpdateCreativeTemplate builder with application/json body
-func NewUpdateCreativeTemplateRequest(server string, creativeTemplateId int32, body UpdateCreativeTemplateJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewUpdateCreativeTemplateRequestWithBody(server, creativeTemplateId, "application/json", bodyReader)
-}
-
-// NewUpdateCreativeTemplateRequestWithBody generates requests for UpdateCreativeTemplate with any type of body
-func NewUpdateCreativeTemplateRequestWithBody(server string, creativeTemplateId int32, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "creativeTemplateId", runtime.ParamLocationPath, creativeTemplateId)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/v2/creative-templates/%s/update", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -6386,12 +2198,6 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetAd request
-	GetAdWithResponse(ctx context.Context, adId int32, reqEditors ...RequestEditorFn) (*GetAdResponse, error)
-
-	// GetAdTrackingUrls request
-	GetAdTrackingUrlsWithResponse(ctx context.Context, adId int32, params *GetAdTrackingUrlsParams, reqEditors ...RequestEditorFn) (*GetAdTrackingUrlsResponse, error)
-
 	// ListAdTypes request
 	ListAdTypesWithResponse(ctx context.Context, params *ListAdTypesParams, reqEditors ...RequestEditorFn) (*ListAdTypesResponse, error)
 
@@ -6401,61 +2207,7 @@ type ClientWithResponsesInterface interface {
 	CreateAdTypeWithResponse(ctx context.Context, body CreateAdTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdTypeResponse, error)
 
 	// DeleteAdType request
-	DeleteAdTypeWithResponse(ctx context.Context, adTypeId int32, reqEditors ...RequestEditorFn) (*DeleteAdTypeResponse, error)
-
-	// ListAdvertisers request
-	ListAdvertisersWithResponse(ctx context.Context, params *ListAdvertisersParams, reqEditors ...RequestEditorFn) (*ListAdvertisersResponse, error)
-
-	// CreateAdvertiser request with any body
-	CreateAdvertiserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAdvertiserResponse, error)
-
-	CreateAdvertiserWithResponse(ctx context.Context, body CreateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdvertiserResponse, error)
-
-	// SearchAdvertisers request with any body
-	SearchAdvertisersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SearchAdvertisersResponse, error)
-
-	SearchAdvertisersWithFormdataBodyWithResponse(ctx context.Context, body SearchAdvertisersFormdataRequestBody, reqEditors ...RequestEditorFn) (*SearchAdvertisersResponse, error)
-
-	// ListCreativesForAdvertiser request
-	ListCreativesForAdvertiserWithResponse(ctx context.Context, advertiserId int32, params *ListCreativesForAdvertiserParams, reqEditors ...RequestEditorFn) (*ListCreativesForAdvertiserResponse, error)
-
-	// GetAdvertiser request
-	GetAdvertiserWithResponse(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*GetAdvertiserResponse, error)
-
-	// UpdateAdvertiser request with any body
-	UpdateAdvertiserWithBodyWithResponse(ctx context.Context, advertiserId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAdvertiserResponse, error)
-
-	UpdateAdvertiserWithResponse(ctx context.Context, advertiserId int, body UpdateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAdvertiserResponse, error)
-
-	// GetTrackingCode request
-	GetTrackingCodeWithResponse(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*GetTrackingCodeResponse, error)
-
-	// ListCampaigns request
-	ListCampaignsWithResponse(ctx context.Context, params *ListCampaignsParams, reqEditors ...RequestEditorFn) (*ListCampaignsResponse, error)
-
-	// CreateCampaign request with any body
-	CreateCampaignWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCampaignResponse, error)
-
-	CreateCampaignWithResponse(ctx context.Context, body CreateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCampaignResponse, error)
-
-	// SearchCampaigns request with any body
-	SearchCampaignsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SearchCampaignsResponse, error)
-
-	SearchCampaignsWithFormdataBodyWithResponse(ctx context.Context, body SearchCampaignsFormdataRequestBody, reqEditors ...RequestEditorFn) (*SearchCampaignsResponse, error)
-
-	// GetCampaign request
-	GetCampaignWithResponse(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*GetCampaignResponse, error)
-
-	// UpdateCampaign request with any body
-	UpdateCampaignWithBodyWithResponse(ctx context.Context, campaignId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCampaignResponse, error)
-
-	UpdateCampaignWithResponse(ctx context.Context, campaignId int, body UpdateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCampaignResponse, error)
-
-	// ListFlightsForCampaign request
-	ListFlightsForCampaignWithResponse(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*ListFlightsForCampaignResponse, error)
-
-	// GetFlightCategories request
-	GetFlightCategoriesWithResponse(ctx context.Context, params *GetFlightCategoriesParams, reqEditors ...RequestEditorFn) (*GetFlightCategoriesResponse, error)
+	DeleteAdTypeWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*DeleteAdTypeResponse, error)
 
 	// ListChannels request
 	ListChannelsWithResponse(ctx context.Context, params *ListChannelsParams, reqEditors ...RequestEditorFn) (*ListChannelsResponse, error)
@@ -6465,36 +2217,36 @@ type ClientWithResponsesInterface interface {
 
 	CreateChannelWithResponse(ctx context.Context, body CreateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateChannelResponse, error)
 
-	// GetChannel request
-	GetChannelWithResponse(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*GetChannelResponse, error)
+	// ListForChannelAdType request
+	ListForChannelAdTypeWithResponse(ctx context.Context, channelId int32, params *ListForChannelAdTypeParams, reqEditors ...RequestEditorFn) (*ListForChannelAdTypeResponse, error)
 
-	// UpdateChannel request with any body
-	UpdateChannelWithBodyWithResponse(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error)
+	// CreateForChannelAdType request with any body
+	CreateForChannelAdTypeWithBodyWithResponse(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateForChannelAdTypeResponse, error)
 
-	UpdateChannelWithResponse(ctx context.Context, channelId int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error)
+	CreateForChannelAdTypeWithResponse(ctx context.Context, channelId int32, body CreateForChannelAdTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateForChannelAdTypeResponse, error)
 
-	// ListAdTypesForChannel request
-	ListAdTypesForChannelWithResponse(ctx context.Context, channelId int32, params *ListAdTypesForChannelParams, reqEditors ...RequestEditorFn) (*ListAdTypesForChannelResponse, error)
-
-	// CreateAdTypeForChannel request with any body
-	CreateAdTypeForChannelWithBodyWithResponse(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAdTypeForChannelResponse, error)
-
-	CreateAdTypeForChannelWithResponse(ctx context.Context, channelId int32, body CreateAdTypeForChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdTypeForChannelResponse, error)
-
-	// DeleteAdTypeForChannel request
-	DeleteAdTypeForChannelWithResponse(ctx context.Context, channelId int32, adTypeId int32, reqEditors ...RequestEditorFn) (*DeleteAdTypeForChannelResponse, error)
-
-	// DeleteChannel request
-	DeleteChannelWithResponse(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*DeleteChannelResponse, error)
-
-	// GetPrioritiesForChannel request
-	GetPrioritiesForChannelWithResponse(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*GetPrioritiesForChannelResponse, error)
+	// DeleteForChannelAdType request
+	DeleteForChannelAdTypeWithResponse(ctx context.Context, channelId int32, id int32, reqEditors ...RequestEditorFn) (*DeleteForChannelAdTypeResponse, error)
 
 	// GetChannelSiteMap request
 	GetChannelSiteMapWithResponse(ctx context.Context, channelId int32, siteId int32, reqEditors ...RequestEditorFn) (*GetChannelSiteMapResponse, error)
 
 	// DeleteChannelSiteMap request
 	DeleteChannelSiteMapWithResponse(ctx context.Context, channelId int32, siteId int32, reqEditors ...RequestEditorFn) (*DeleteChannelSiteMapResponse, error)
+
+	// GetChannel request
+	GetChannelWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetChannelResponse, error)
+
+	// UpdateChannel request with any body
+	UpdateChannelWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error)
+
+	UpdateChannelWithResponse(ctx context.Context, id int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error)
+
+	// DeleteChannel request
+	DeleteChannelWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*DeleteChannelResponse, error)
+
+	// GetPrioritiesChannel request
+	GetPrioritiesChannelWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetPrioritiesChannelResponse, error)
 
 	// ListChannelSiteMaps request
 	ListChannelSiteMapsWithResponse(ctx context.Context, params *ListChannelSiteMapsParams, reqEditors ...RequestEditorFn) (*ListChannelSiteMapsResponse, error)
@@ -6509,130 +2261,11 @@ type ClientWithResponsesInterface interface {
 
 	UpdateChannelSiteMapWithResponse(ctx context.Context, body UpdateChannelSiteMapJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChannelSiteMapResponse, error)
 
-	// ListChannelsForSite request
-	ListChannelsForSiteWithResponse(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*ListChannelsForSiteResponse, error)
+	// ListChannelsForSiteChannelSiteMap request
+	ListChannelsForSiteChannelSiteMapWithResponse(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*ListChannelsForSiteChannelSiteMapResponse, error)
 
-	// ListCountries request
-	ListCountriesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCountriesResponse, error)
-
-	// ListRegionsForCountry request
-	ListRegionsForCountryWithResponse(ctx context.Context, countryCode string, reqEditors ...RequestEditorFn) (*ListRegionsForCountryResponse, error)
-
-	// CreateCreative request with any body
-	CreateCreativeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCreativeResponse, error)
-
-	CreateCreativeWithResponse(ctx context.Context, body CreateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCreativeResponse, error)
-
-	// GetCreative request
-	GetCreativeWithResponse(ctx context.Context, creativeId int32, reqEditors ...RequestEditorFn) (*GetCreativeResponse, error)
-
-	// UpdateCreative request with any body
-	UpdateCreativeWithBodyWithResponse(ctx context.Context, creativeId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCreativeResponse, error)
-
-	UpdateCreativeWithResponse(ctx context.Context, creativeId int32, body UpdateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCreativeResponse, error)
-
-	// UploadCreativeImage request with any body
-	UploadCreativeImageWithBodyWithResponse(ctx context.Context, creativeId int32, params *UploadCreativeImageParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadCreativeImageResponse, error)
-
-	// FilterFlights request
-	FilterFlightsWithResponse(ctx context.Context, params *FilterFlightsParams, reqEditors ...RequestEditorFn) (*FilterFlightsResponse, error)
-
-	// FilterSites request
-	FilterSitesWithResponse(ctx context.Context, params *FilterSitesParams, reqEditors ...RequestEditorFn) (*FilterSitesResponse, error)
-
-	// ListFlights request
-	ListFlightsWithResponse(ctx context.Context, params *ListFlightsParams, reqEditors ...RequestEditorFn) (*ListFlightsResponse, error)
-
-	// CreateFlight request with any body
-	CreateFlightWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFlightResponse, error)
-
-	CreateFlightWithResponse(ctx context.Context, body CreateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFlightResponse, error)
-
-	// GetFlight request
-	GetFlightWithResponse(ctx context.Context, flightId int, params *GetFlightParams, reqEditors ...RequestEditorFn) (*GetFlightResponse, error)
-
-	// UpdateFlight request with any body
-	UpdateFlightWithBodyWithResponse(ctx context.Context, flightId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateFlightResponse, error)
-
-	UpdateFlightWithResponse(ctx context.Context, flightId int, body UpdateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateFlightResponse, error)
-
-	// GetFlightCategoriesForFlight request
-	GetFlightCategoriesForFlightWithResponse(ctx context.Context, flightId int32, params *GetFlightCategoriesForFlightParams, reqEditors ...RequestEditorFn) (*GetFlightCategoriesForFlightResponse, error)
-
-	// CreateFlightCategory request with any body
-	CreateFlightCategoryWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFlightCategoryResponse, error)
-
-	CreateFlightCategoryWithResponse(ctx context.Context, flightId int32, body CreateFlightCategoryJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFlightCategoryResponse, error)
-
-	// DeleteFlightCategory request
-	DeleteFlightCategoryWithResponse(ctx context.Context, flightId int32, flightCategoryId int32, reqEditors ...RequestEditorFn) (*DeleteFlightCategoryResponse, error)
-
-	// CreateAd request with any body
-	CreateAdWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAdResponse, error)
-
-	CreateAdWithResponse(ctx context.Context, flightId int32, body CreateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdResponse, error)
-
-	// UpdateAd request with any body
-	UpdateAdWithBodyWithResponse(ctx context.Context, flightId int32, adId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAdResponse, error)
-
-	UpdateAdWithResponse(ctx context.Context, flightId int32, adId int32, body UpdateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAdResponse, error)
-
-	// ListAdsForFlight request
-	ListAdsForFlightWithResponse(ctx context.Context, flightId int32, params *ListAdsForFlightParams, reqEditors ...RequestEditorFn) (*ListAdsForFlightResponse, error)
-
-	// CreateGeoTarget request with any body
-	CreateGeoTargetWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateGeoTargetResponse, error)
-
-	CreateGeoTargetWithResponse(ctx context.Context, flightId int32, body CreateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateGeoTargetResponse, error)
-
-	// GetGeoTarget request
-	GetGeoTargetWithResponse(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*GetGeoTargetResponse, error)
-
-	// UpdateGeoTarget request with any body
-	UpdateGeoTargetWithBodyWithResponse(ctx context.Context, flightId int32, locationId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGeoTargetResponse, error)
-
-	UpdateGeoTargetWithResponse(ctx context.Context, flightId int32, locationId int32, body UpdateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGeoTargetResponse, error)
-
-	// DeleteGeoTarget request
-	DeleteGeoTargetWithResponse(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*DeleteGeoTargetResponse, error)
-
-	// CreateSiteZoneTargeting request with any body
-	CreateSiteZoneTargetingWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSiteZoneTargetingResponse, error)
-
-	CreateSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, body CreateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteZoneTargetingResponse, error)
-
-	// GetSiteZoneTargeting request
-	GetSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*GetSiteZoneTargetingResponse, error)
-
-	// UpdateSiteZoneTargeting request with any body
-	UpdateSiteZoneTargetingWithBodyWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteZoneTargetingResponse, error)
-
-	UpdateSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, body UpdateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteZoneTargetingResponse, error)
-
-	// DeleteSiteZoneTargeting request
-	DeleteSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*DeleteSiteZoneTargetingResponse, error)
-
-	// ListPriorities request
-	ListPrioritiesWithResponse(ctx context.Context, params *ListPrioritiesParams, reqEditors ...RequestEditorFn) (*ListPrioritiesResponse, error)
-
-	// CreatePriority request with any body
-	CreatePriorityWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePriorityResponse, error)
-
-	CreatePriorityWithResponse(ctx context.Context, body CreatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePriorityResponse, error)
-
-	// GetPriority request
-	GetPriorityWithResponse(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*GetPriorityResponse, error)
-
-	// UpdatePriority request with any body
-	UpdatePriorityWithBodyWithResponse(ctx context.Context, priorityId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePriorityResponse, error)
-
-	UpdatePriorityWithResponse(ctx context.Context, priorityId int32, body UpdatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePriorityResponse, error)
-
-	// DeletePriority request
-	DeletePriorityWithResponse(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*DeletePriorityResponse, error)
-
-	// ListMetroCodesInRegion request
-	ListMetroCodesInRegionWithResponse(ctx context.Context, regionCode string, reqEditors ...RequestEditorFn) (*ListMetroCodesInRegionResponse, error)
+	// FilterSite request
+	FilterSiteWithResponse(ctx context.Context, params *FilterSiteParams, reqEditors ...RequestEditorFn) (*FilterSiteResponse, error)
 
 	// ListSites request
 	ListSitesWithResponse(ctx context.Context, params *ListSitesParams, reqEditors ...RequestEditorFn) (*ListSitesResponse, error)
@@ -6643,12 +2276,12 @@ type ClientWithResponsesInterface interface {
 	CreateSiteWithResponse(ctx context.Context, body CreateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteResponse, error)
 
 	// GetSite request
-	GetSiteWithResponse(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*GetSiteResponse, error)
+	GetSiteWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetSiteResponse, error)
 
 	// UpdateSite request with any body
-	UpdateSiteWithBodyWithResponse(ctx context.Context, siteId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error)
+	UpdateSiteWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error)
 
-	UpdateSiteWithResponse(ctx context.Context, siteId int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error)
+	UpdateSiteWithResponse(ctx context.Context, id int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error)
 
 	// ListZones request
 	ListZonesWithResponse(ctx context.Context, params *ListZonesParams, reqEditors ...RequestEditorFn) (*ListZonesResponse, error)
@@ -6659,72 +2292,12 @@ type ClientWithResponsesInterface interface {
 	CreateZoneWithResponse(ctx context.Context, body CreateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateZoneResponse, error)
 
 	// GetZone request
-	GetZoneWithResponse(ctx context.Context, zoneId int32, reqEditors ...RequestEditorFn) (*GetZoneResponse, error)
+	GetZoneWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetZoneResponse, error)
 
 	// UpdateZone request with any body
-	UpdateZoneWithBodyWithResponse(ctx context.Context, zoneId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error)
+	UpdateZoneWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error)
 
-	UpdateZoneWithResponse(ctx context.Context, zoneId int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error)
-
-	// ListCreativeTemplates request
-	ListCreativeTemplatesWithResponse(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*ListCreativeTemplatesResponse, error)
-
-	// CreateCreativeTemplate request with any body
-	CreateCreativeTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error)
-
-	CreateCreativeTemplateWithResponse(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error)
-
-	// GetCreativeTemplate request
-	GetCreativeTemplateWithResponse(ctx context.Context, creativeTemplateId int32, reqEditors ...RequestEditorFn) (*GetCreativeTemplateResponse, error)
-
-	// UpdateCreativeTemplate request with any body
-	UpdateCreativeTemplateWithBodyWithResponse(ctx context.Context, creativeTemplateId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error)
-
-	UpdateCreativeTemplateWithResponse(ctx context.Context, creativeTemplateId int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error)
-}
-
-type GetAdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Ad
-}
-
-// Status returns HTTPResponse.Status
-func (r GetAdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetAdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetAdTrackingUrlsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *TrackingDetails
-}
-
-// Status returns HTTPResponse.Status
-func (r GetAdTrackingUrlsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetAdTrackingUrlsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
+	UpdateZoneWithResponse(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error)
 }
 
 type ListAdTypesResponse struct {
@@ -6792,314 +2365,6 @@ func (r DeleteAdTypeResponse) StatusCode() int {
 	return 0
 }
 
-type ListAdvertisersResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *AdvertiserList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListAdvertisersResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListAdvertisersResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateAdvertiserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Advertiser
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateAdvertiserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateAdvertiserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type SearchAdvertisersResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *AdvertiserList
-}
-
-// Status returns HTTPResponse.Status
-func (r SearchAdvertisersResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r SearchAdvertisersResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListCreativesForAdvertiserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CreativeList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListCreativesForAdvertiserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListCreativesForAdvertiserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetAdvertiserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Advertiser
-}
-
-// Status returns HTTPResponse.Status
-func (r GetAdvertiserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetAdvertiserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateAdvertiserResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Advertiser
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateAdvertiserResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateAdvertiserResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetTrackingCodeResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *TrackingPixel
-}
-
-// Status returns HTTPResponse.Status
-func (r GetTrackingCodeResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetTrackingCodeResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListCampaignsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CampaignList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListCampaignsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListCampaignsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateCampaignResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Campaign
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateCampaignResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateCampaignResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type SearchCampaignsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CampaignList
-}
-
-// Status returns HTTPResponse.Status
-func (r SearchCampaignsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r SearchCampaignsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetCampaignResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Campaign
-}
-
-// Status returns HTTPResponse.Status
-func (r GetCampaignResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetCampaignResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateCampaignResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Campaign
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateCampaignResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateCampaignResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListFlightsForCampaignResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *FlightList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListFlightsForCampaignResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListFlightsForCampaignResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetFlightCategoriesResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *FlightCategoryList
-}
-
-// Status returns HTTPResponse.Status
-func (r GetFlightCategoriesResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetFlightCategoriesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type ListChannelsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -7138,6 +2403,114 @@ func (r CreateChannelResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r CreateChannelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type ListForChannelAdTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AdTypeList
+}
+
+// Status returns HTTPResponse.Status
+func (r ListForChannelAdTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListForChannelAdTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateForChannelAdTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *AdType
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateForChannelAdTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateForChannelAdTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteForChannelAdTypeResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteForChannelAdTypeResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteForChannelAdTypeResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetChannelSiteMapResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *ChannelSiteMap
+}
+
+// Status returns HTTPResponse.Status
+func (r GetChannelSiteMapResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetChannelSiteMapResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteChannelSiteMapResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteChannelSiteMapResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteChannelSiteMapResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -7188,71 +2561,6 @@ func (r UpdateChannelResponse) StatusCode() int {
 	return 0
 }
 
-type ListAdTypesForChannelResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *AdTypeList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListAdTypesForChannelResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListAdTypesForChannelResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateAdTypeForChannelResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *AdType
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateAdTypeForChannelResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateAdTypeForChannelResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteAdTypeForChannelResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteAdTypeForChannelResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAdTypeForChannelResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
 type DeleteChannelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -7274,14 +2582,14 @@ func (r DeleteChannelResponse) StatusCode() int {
 	return 0
 }
 
-type GetPrioritiesForChannelResponse struct {
+type GetPrioritiesChannelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *[]Priority
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPrioritiesForChannelResponse) Status() string {
+func (r GetPrioritiesChannelResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -7289,50 +2597,7 @@ func (r GetPrioritiesForChannelResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPrioritiesForChannelResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetChannelSiteMapResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *ChannelSiteMap
-}
-
-// Status returns HTTPResponse.Status
-func (r GetChannelSiteMapResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetChannelSiteMapResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteChannelSiteMapResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteChannelSiteMapResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteChannelSiteMapResponse) StatusCode() int {
+func (r GetPrioritiesChannelResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -7405,14 +2670,14 @@ func (r UpdateChannelSiteMapResponse) StatusCode() int {
 	return 0
 }
 
-type ListChannelsForSiteResponse struct {
+type ListChannelsForSiteChannelSiteMapResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *SchemasChannelList
+	JSON200      *ChannelList
 }
 
 // Status returns HTTPResponse.Status
-func (r ListChannelsForSiteResponse) Status() string {
+func (r ListChannelsForSiteChannelSiteMapResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -7420,21 +2685,20 @@ func (r ListChannelsForSiteResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListChannelsForSiteResponse) StatusCode() int {
+func (r ListChannelsForSiteChannelSiteMapResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type ListCountriesResponse struct {
+type FilterSiteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *[]Country
 }
 
 // Status returns HTTPResponse.Status
-func (r ListCountriesResponse) Status() string {
+func (r FilterSiteResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -7442,683 +2706,7 @@ func (r ListCountriesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListCountriesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListRegionsForCountryResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Country
-}
-
-// Status returns HTTPResponse.Status
-func (r ListRegionsForCountryResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListRegionsForCountryResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateCreativeResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Creative
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateCreativeResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateCreativeResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetCreativeResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Creative
-}
-
-// Status returns HTTPResponse.Status
-func (r GetCreativeResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetCreativeResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateCreativeResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Creative
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateCreativeResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateCreativeResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UploadCreativeImageResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Creative
-}
-
-// Status returns HTTPResponse.Status
-func (r UploadCreativeImageResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UploadCreativeImageResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type FilterFlightsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r FilterFlightsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FilterFlightsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type FilterSitesResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r FilterSitesResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r FilterSitesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListFlightsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *FlightList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListFlightsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListFlightsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateFlightResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Flight
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateFlightResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateFlightResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetFlightResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Flight
-}
-
-// Status returns HTTPResponse.Status
-func (r GetFlightResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetFlightResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateFlightResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Flight
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateFlightResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateFlightResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetFlightCategoriesForFlightResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *FlightCategoryList
-}
-
-// Status returns HTTPResponse.Status
-func (r GetFlightCategoriesForFlightResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetFlightCategoriesForFlightResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateFlightCategoryResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *FlightCategory
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateFlightCategoryResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateFlightCategoryResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteFlightCategoryResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteFlightCategoryResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteFlightCategoryResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateAdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Ad
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateAdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateAdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateAdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Ad
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateAdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateAdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListAdsForFlightResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *AdList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListAdsForFlightResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListAdsForFlightResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateGeoTargetResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *GeoTarget
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateGeoTargetResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateGeoTargetResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetGeoTargetResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *GeoTarget
-}
-
-// Status returns HTTPResponse.Status
-func (r GetGeoTargetResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetGeoTargetResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateGeoTargetResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *GeoTarget
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateGeoTargetResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateGeoTargetResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteGeoTargetResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteGeoTargetResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteGeoTargetResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateSiteZoneTargetingResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *SiteZone
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateSiteZoneTargetingResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateSiteZoneTargetingResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetSiteZoneTargetingResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *SiteZone
-}
-
-// Status returns HTTPResponse.Status
-func (r GetSiteZoneTargetingResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetSiteZoneTargetingResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateSiteZoneTargetingResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *SiteZone
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateSiteZoneTargetingResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateSiteZoneTargetingResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeleteSiteZoneTargetingResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteSiteZoneTargetingResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSiteZoneTargetingResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListPrioritiesResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *PriorityList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListPrioritiesResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListPrioritiesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreatePriorityResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Priority
-}
-
-// Status returns HTTPResponse.Status
-func (r CreatePriorityResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreatePriorityResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetPriorityResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Priority
-}
-
-// Status returns HTTPResponse.Status
-func (r GetPriorityResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetPriorityResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdatePriorityResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *Priority
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdatePriorityResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdatePriorityResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type DeletePriorityResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-}
-
-// Status returns HTTPResponse.Status
-func (r DeletePriorityResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeletePriorityResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type ListMetroCodesInRegionResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *[]Metro
-}
-
-// Status returns HTTPResponse.Status
-func (r ListMetroCodesInRegionResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListMetroCodesInRegionResponse) StatusCode() int {
+func (r FilterSiteResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -8301,112 +2889,6 @@ func (r UpdateZoneResponse) StatusCode() int {
 	return 0
 }
 
-type ListCreativeTemplatesResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CreativeTemplateList
-}
-
-// Status returns HTTPResponse.Status
-func (r ListCreativeTemplatesResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r ListCreativeTemplatesResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type CreateCreativeTemplateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CreativeTemplate
-}
-
-// Status returns HTTPResponse.Status
-func (r CreateCreativeTemplateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r CreateCreativeTemplateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type GetCreativeTemplateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CreativeTemplate
-}
-
-// Status returns HTTPResponse.Status
-func (r GetCreativeTemplateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetCreativeTemplateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-type UpdateCreativeTemplateResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *CreativeTemplate
-}
-
-// Status returns HTTPResponse.Status
-func (r UpdateCreativeTemplateResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r UpdateCreativeTemplateResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// GetAdWithResponse request returning *GetAdResponse
-func (c *ClientWithResponses) GetAdWithResponse(ctx context.Context, adId int32, reqEditors ...RequestEditorFn) (*GetAdResponse, error) {
-	rsp, err := c.GetAd(ctx, adId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetAdResponse(rsp)
-}
-
-// GetAdTrackingUrlsWithResponse request returning *GetAdTrackingUrlsResponse
-func (c *ClientWithResponses) GetAdTrackingUrlsWithResponse(ctx context.Context, adId int32, params *GetAdTrackingUrlsParams, reqEditors ...RequestEditorFn) (*GetAdTrackingUrlsResponse, error) {
-	rsp, err := c.GetAdTrackingUrls(ctx, adId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetAdTrackingUrlsResponse(rsp)
-}
-
 // ListAdTypesWithResponse request returning *ListAdTypesResponse
 func (c *ClientWithResponses) ListAdTypesWithResponse(ctx context.Context, params *ListAdTypesParams, reqEditors ...RequestEditorFn) (*ListAdTypesResponse, error) {
 	rsp, err := c.ListAdTypes(ctx, params, reqEditors...)
@@ -8434,186 +2916,12 @@ func (c *ClientWithResponses) CreateAdTypeWithResponse(ctx context.Context, body
 }
 
 // DeleteAdTypeWithResponse request returning *DeleteAdTypeResponse
-func (c *ClientWithResponses) DeleteAdTypeWithResponse(ctx context.Context, adTypeId int32, reqEditors ...RequestEditorFn) (*DeleteAdTypeResponse, error) {
-	rsp, err := c.DeleteAdType(ctx, adTypeId, reqEditors...)
+func (c *ClientWithResponses) DeleteAdTypeWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*DeleteAdTypeResponse, error) {
+	rsp, err := c.DeleteAdType(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseDeleteAdTypeResponse(rsp)
-}
-
-// ListAdvertisersWithResponse request returning *ListAdvertisersResponse
-func (c *ClientWithResponses) ListAdvertisersWithResponse(ctx context.Context, params *ListAdvertisersParams, reqEditors ...RequestEditorFn) (*ListAdvertisersResponse, error) {
-	rsp, err := c.ListAdvertisers(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListAdvertisersResponse(rsp)
-}
-
-// CreateAdvertiserWithBodyWithResponse request with arbitrary body returning *CreateAdvertiserResponse
-func (c *ClientWithResponses) CreateAdvertiserWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAdvertiserResponse, error) {
-	rsp, err := c.CreateAdvertiserWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateAdvertiserResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateAdvertiserWithResponse(ctx context.Context, body CreateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdvertiserResponse, error) {
-	rsp, err := c.CreateAdvertiser(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateAdvertiserResponse(rsp)
-}
-
-// SearchAdvertisersWithBodyWithResponse request with arbitrary body returning *SearchAdvertisersResponse
-func (c *ClientWithResponses) SearchAdvertisersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SearchAdvertisersResponse, error) {
-	rsp, err := c.SearchAdvertisersWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSearchAdvertisersResponse(rsp)
-}
-
-func (c *ClientWithResponses) SearchAdvertisersWithFormdataBodyWithResponse(ctx context.Context, body SearchAdvertisersFormdataRequestBody, reqEditors ...RequestEditorFn) (*SearchAdvertisersResponse, error) {
-	rsp, err := c.SearchAdvertisersWithFormdataBody(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSearchAdvertisersResponse(rsp)
-}
-
-// ListCreativesForAdvertiserWithResponse request returning *ListCreativesForAdvertiserResponse
-func (c *ClientWithResponses) ListCreativesForAdvertiserWithResponse(ctx context.Context, advertiserId int32, params *ListCreativesForAdvertiserParams, reqEditors ...RequestEditorFn) (*ListCreativesForAdvertiserResponse, error) {
-	rsp, err := c.ListCreativesForAdvertiser(ctx, advertiserId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListCreativesForAdvertiserResponse(rsp)
-}
-
-// GetAdvertiserWithResponse request returning *GetAdvertiserResponse
-func (c *ClientWithResponses) GetAdvertiserWithResponse(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*GetAdvertiserResponse, error) {
-	rsp, err := c.GetAdvertiser(ctx, advertiserId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetAdvertiserResponse(rsp)
-}
-
-// UpdateAdvertiserWithBodyWithResponse request with arbitrary body returning *UpdateAdvertiserResponse
-func (c *ClientWithResponses) UpdateAdvertiserWithBodyWithResponse(ctx context.Context, advertiserId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAdvertiserResponse, error) {
-	rsp, err := c.UpdateAdvertiserWithBody(ctx, advertiserId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateAdvertiserResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateAdvertiserWithResponse(ctx context.Context, advertiserId int, body UpdateAdvertiserJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAdvertiserResponse, error) {
-	rsp, err := c.UpdateAdvertiser(ctx, advertiserId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateAdvertiserResponse(rsp)
-}
-
-// GetTrackingCodeWithResponse request returning *GetTrackingCodeResponse
-func (c *ClientWithResponses) GetTrackingCodeWithResponse(ctx context.Context, advertiserId int, reqEditors ...RequestEditorFn) (*GetTrackingCodeResponse, error) {
-	rsp, err := c.GetTrackingCode(ctx, advertiserId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetTrackingCodeResponse(rsp)
-}
-
-// ListCampaignsWithResponse request returning *ListCampaignsResponse
-func (c *ClientWithResponses) ListCampaignsWithResponse(ctx context.Context, params *ListCampaignsParams, reqEditors ...RequestEditorFn) (*ListCampaignsResponse, error) {
-	rsp, err := c.ListCampaigns(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListCampaignsResponse(rsp)
-}
-
-// CreateCampaignWithBodyWithResponse request with arbitrary body returning *CreateCampaignResponse
-func (c *ClientWithResponses) CreateCampaignWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCampaignResponse, error) {
-	rsp, err := c.CreateCampaignWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateCampaignResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateCampaignWithResponse(ctx context.Context, body CreateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCampaignResponse, error) {
-	rsp, err := c.CreateCampaign(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateCampaignResponse(rsp)
-}
-
-// SearchCampaignsWithBodyWithResponse request with arbitrary body returning *SearchCampaignsResponse
-func (c *ClientWithResponses) SearchCampaignsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SearchCampaignsResponse, error) {
-	rsp, err := c.SearchCampaignsWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSearchCampaignsResponse(rsp)
-}
-
-func (c *ClientWithResponses) SearchCampaignsWithFormdataBodyWithResponse(ctx context.Context, body SearchCampaignsFormdataRequestBody, reqEditors ...RequestEditorFn) (*SearchCampaignsResponse, error) {
-	rsp, err := c.SearchCampaignsWithFormdataBody(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseSearchCampaignsResponse(rsp)
-}
-
-// GetCampaignWithResponse request returning *GetCampaignResponse
-func (c *ClientWithResponses) GetCampaignWithResponse(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*GetCampaignResponse, error) {
-	rsp, err := c.GetCampaign(ctx, campaignId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetCampaignResponse(rsp)
-}
-
-// UpdateCampaignWithBodyWithResponse request with arbitrary body returning *UpdateCampaignResponse
-func (c *ClientWithResponses) UpdateCampaignWithBodyWithResponse(ctx context.Context, campaignId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCampaignResponse, error) {
-	rsp, err := c.UpdateCampaignWithBody(ctx, campaignId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateCampaignResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateCampaignWithResponse(ctx context.Context, campaignId int, body UpdateCampaignJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCampaignResponse, error) {
-	rsp, err := c.UpdateCampaign(ctx, campaignId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateCampaignResponse(rsp)
-}
-
-// ListFlightsForCampaignWithResponse request returning *ListFlightsForCampaignResponse
-func (c *ClientWithResponses) ListFlightsForCampaignWithResponse(ctx context.Context, campaignId int, reqEditors ...RequestEditorFn) (*ListFlightsForCampaignResponse, error) {
-	rsp, err := c.ListFlightsForCampaign(ctx, campaignId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListFlightsForCampaignResponse(rsp)
-}
-
-// GetFlightCategoriesWithResponse request returning *GetFlightCategoriesResponse
-func (c *ClientWithResponses) GetFlightCategoriesWithResponse(ctx context.Context, params *GetFlightCategoriesParams, reqEditors ...RequestEditorFn) (*GetFlightCategoriesResponse, error) {
-	rsp, err := c.GetFlightCategories(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetFlightCategoriesResponse(rsp)
 }
 
 // ListChannelsWithResponse request returning *ListChannelsResponse
@@ -8642,83 +2950,39 @@ func (c *ClientWithResponses) CreateChannelWithResponse(ctx context.Context, bod
 	return ParseCreateChannelResponse(rsp)
 }
 
-// GetChannelWithResponse request returning *GetChannelResponse
-func (c *ClientWithResponses) GetChannelWithResponse(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*GetChannelResponse, error) {
-	rsp, err := c.GetChannel(ctx, channelId, reqEditors...)
+// ListForChannelAdTypeWithResponse request returning *ListForChannelAdTypeResponse
+func (c *ClientWithResponses) ListForChannelAdTypeWithResponse(ctx context.Context, channelId int32, params *ListForChannelAdTypeParams, reqEditors ...RequestEditorFn) (*ListForChannelAdTypeResponse, error) {
+	rsp, err := c.ListForChannelAdType(ctx, channelId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetChannelResponse(rsp)
+	return ParseListForChannelAdTypeResponse(rsp)
 }
 
-// UpdateChannelWithBodyWithResponse request with arbitrary body returning *UpdateChannelResponse
-func (c *ClientWithResponses) UpdateChannelWithBodyWithResponse(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error) {
-	rsp, err := c.UpdateChannelWithBody(ctx, channelId, contentType, body, reqEditors...)
+// CreateForChannelAdTypeWithBodyWithResponse request with arbitrary body returning *CreateForChannelAdTypeResponse
+func (c *ClientWithResponses) CreateForChannelAdTypeWithBodyWithResponse(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateForChannelAdTypeResponse, error) {
+	rsp, err := c.CreateForChannelAdTypeWithBody(ctx, channelId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateChannelResponse(rsp)
+	return ParseCreateForChannelAdTypeResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateChannelWithResponse(ctx context.Context, channelId int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error) {
-	rsp, err := c.UpdateChannel(ctx, channelId, body, reqEditors...)
+func (c *ClientWithResponses) CreateForChannelAdTypeWithResponse(ctx context.Context, channelId int32, body CreateForChannelAdTypeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateForChannelAdTypeResponse, error) {
+	rsp, err := c.CreateForChannelAdType(ctx, channelId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseUpdateChannelResponse(rsp)
+	return ParseCreateForChannelAdTypeResponse(rsp)
 }
 
-// ListAdTypesForChannelWithResponse request returning *ListAdTypesForChannelResponse
-func (c *ClientWithResponses) ListAdTypesForChannelWithResponse(ctx context.Context, channelId int32, params *ListAdTypesForChannelParams, reqEditors ...RequestEditorFn) (*ListAdTypesForChannelResponse, error) {
-	rsp, err := c.ListAdTypesForChannel(ctx, channelId, params, reqEditors...)
+// DeleteForChannelAdTypeWithResponse request returning *DeleteForChannelAdTypeResponse
+func (c *ClientWithResponses) DeleteForChannelAdTypeWithResponse(ctx context.Context, channelId int32, id int32, reqEditors ...RequestEditorFn) (*DeleteForChannelAdTypeResponse, error) {
+	rsp, err := c.DeleteForChannelAdType(ctx, channelId, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListAdTypesForChannelResponse(rsp)
-}
-
-// CreateAdTypeForChannelWithBodyWithResponse request with arbitrary body returning *CreateAdTypeForChannelResponse
-func (c *ClientWithResponses) CreateAdTypeForChannelWithBodyWithResponse(ctx context.Context, channelId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAdTypeForChannelResponse, error) {
-	rsp, err := c.CreateAdTypeForChannelWithBody(ctx, channelId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateAdTypeForChannelResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateAdTypeForChannelWithResponse(ctx context.Context, channelId int32, body CreateAdTypeForChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdTypeForChannelResponse, error) {
-	rsp, err := c.CreateAdTypeForChannel(ctx, channelId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateAdTypeForChannelResponse(rsp)
-}
-
-// DeleteAdTypeForChannelWithResponse request returning *DeleteAdTypeForChannelResponse
-func (c *ClientWithResponses) DeleteAdTypeForChannelWithResponse(ctx context.Context, channelId int32, adTypeId int32, reqEditors ...RequestEditorFn) (*DeleteAdTypeForChannelResponse, error) {
-	rsp, err := c.DeleteAdTypeForChannel(ctx, channelId, adTypeId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteAdTypeForChannelResponse(rsp)
-}
-
-// DeleteChannelWithResponse request returning *DeleteChannelResponse
-func (c *ClientWithResponses) DeleteChannelWithResponse(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*DeleteChannelResponse, error) {
-	rsp, err := c.DeleteChannel(ctx, channelId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteChannelResponse(rsp)
-}
-
-// GetPrioritiesForChannelWithResponse request returning *GetPrioritiesForChannelResponse
-func (c *ClientWithResponses) GetPrioritiesForChannelWithResponse(ctx context.Context, channelId int32, reqEditors ...RequestEditorFn) (*GetPrioritiesForChannelResponse, error) {
-	rsp, err := c.GetPrioritiesForChannel(ctx, channelId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetPrioritiesForChannelResponse(rsp)
+	return ParseDeleteForChannelAdTypeResponse(rsp)
 }
 
 // GetChannelSiteMapWithResponse request returning *GetChannelSiteMapResponse
@@ -8737,6 +3001,50 @@ func (c *ClientWithResponses) DeleteChannelSiteMapWithResponse(ctx context.Conte
 		return nil, err
 	}
 	return ParseDeleteChannelSiteMapResponse(rsp)
+}
+
+// GetChannelWithResponse request returning *GetChannelResponse
+func (c *ClientWithResponses) GetChannelWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetChannelResponse, error) {
+	rsp, err := c.GetChannel(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetChannelResponse(rsp)
+}
+
+// UpdateChannelWithBodyWithResponse request with arbitrary body returning *UpdateChannelResponse
+func (c *ClientWithResponses) UpdateChannelWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error) {
+	rsp, err := c.UpdateChannelWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateChannelResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateChannelWithResponse(ctx context.Context, id int32, body UpdateChannelJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateChannelResponse, error) {
+	rsp, err := c.UpdateChannel(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateChannelResponse(rsp)
+}
+
+// DeleteChannelWithResponse request returning *DeleteChannelResponse
+func (c *ClientWithResponses) DeleteChannelWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*DeleteChannelResponse, error) {
+	rsp, err := c.DeleteChannel(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteChannelResponse(rsp)
+}
+
+// GetPrioritiesChannelWithResponse request returning *GetPrioritiesChannelResponse
+func (c *ClientWithResponses) GetPrioritiesChannelWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetPrioritiesChannelResponse, error) {
+	rsp, err := c.GetPrioritiesChannel(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetPrioritiesChannelResponse(rsp)
 }
 
 // ListChannelSiteMapsWithResponse request returning *ListChannelSiteMapsResponse
@@ -8782,405 +3090,22 @@ func (c *ClientWithResponses) UpdateChannelSiteMapWithResponse(ctx context.Conte
 	return ParseUpdateChannelSiteMapResponse(rsp)
 }
 
-// ListChannelsForSiteWithResponse request returning *ListChannelsForSiteResponse
-func (c *ClientWithResponses) ListChannelsForSiteWithResponse(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*ListChannelsForSiteResponse, error) {
-	rsp, err := c.ListChannelsForSite(ctx, siteId, reqEditors...)
+// ListChannelsForSiteChannelSiteMapWithResponse request returning *ListChannelsForSiteChannelSiteMapResponse
+func (c *ClientWithResponses) ListChannelsForSiteChannelSiteMapWithResponse(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*ListChannelsForSiteChannelSiteMapResponse, error) {
+	rsp, err := c.ListChannelsForSiteChannelSiteMap(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListChannelsForSiteResponse(rsp)
+	return ParseListChannelsForSiteChannelSiteMapResponse(rsp)
 }
 
-// ListCountriesWithResponse request returning *ListCountriesResponse
-func (c *ClientWithResponses) ListCountriesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListCountriesResponse, error) {
-	rsp, err := c.ListCountries(ctx, reqEditors...)
+// FilterSiteWithResponse request returning *FilterSiteResponse
+func (c *ClientWithResponses) FilterSiteWithResponse(ctx context.Context, params *FilterSiteParams, reqEditors ...RequestEditorFn) (*FilterSiteResponse, error) {
+	rsp, err := c.FilterSite(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListCountriesResponse(rsp)
-}
-
-// ListRegionsForCountryWithResponse request returning *ListRegionsForCountryResponse
-func (c *ClientWithResponses) ListRegionsForCountryWithResponse(ctx context.Context, countryCode string, reqEditors ...RequestEditorFn) (*ListRegionsForCountryResponse, error) {
-	rsp, err := c.ListRegionsForCountry(ctx, countryCode, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListRegionsForCountryResponse(rsp)
-}
-
-// CreateCreativeWithBodyWithResponse request with arbitrary body returning *CreateCreativeResponse
-func (c *ClientWithResponses) CreateCreativeWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCreativeResponse, error) {
-	rsp, err := c.CreateCreativeWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateCreativeResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateCreativeWithResponse(ctx context.Context, body CreateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCreativeResponse, error) {
-	rsp, err := c.CreateCreative(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateCreativeResponse(rsp)
-}
-
-// GetCreativeWithResponse request returning *GetCreativeResponse
-func (c *ClientWithResponses) GetCreativeWithResponse(ctx context.Context, creativeId int32, reqEditors ...RequestEditorFn) (*GetCreativeResponse, error) {
-	rsp, err := c.GetCreative(ctx, creativeId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetCreativeResponse(rsp)
-}
-
-// UpdateCreativeWithBodyWithResponse request with arbitrary body returning *UpdateCreativeResponse
-func (c *ClientWithResponses) UpdateCreativeWithBodyWithResponse(ctx context.Context, creativeId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCreativeResponse, error) {
-	rsp, err := c.UpdateCreativeWithBody(ctx, creativeId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateCreativeResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateCreativeWithResponse(ctx context.Context, creativeId int32, body UpdateCreativeJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCreativeResponse, error) {
-	rsp, err := c.UpdateCreative(ctx, creativeId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateCreativeResponse(rsp)
-}
-
-// UploadCreativeImageWithBodyWithResponse request with arbitrary body returning *UploadCreativeImageResponse
-func (c *ClientWithResponses) UploadCreativeImageWithBodyWithResponse(ctx context.Context, creativeId int32, params *UploadCreativeImageParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UploadCreativeImageResponse, error) {
-	rsp, err := c.UploadCreativeImageWithBody(ctx, creativeId, params, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUploadCreativeImageResponse(rsp)
-}
-
-// FilterFlightsWithResponse request returning *FilterFlightsResponse
-func (c *ClientWithResponses) FilterFlightsWithResponse(ctx context.Context, params *FilterFlightsParams, reqEditors ...RequestEditorFn) (*FilterFlightsResponse, error) {
-	rsp, err := c.FilterFlights(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFilterFlightsResponse(rsp)
-}
-
-// FilterSitesWithResponse request returning *FilterSitesResponse
-func (c *ClientWithResponses) FilterSitesWithResponse(ctx context.Context, params *FilterSitesParams, reqEditors ...RequestEditorFn) (*FilterSitesResponse, error) {
-	rsp, err := c.FilterSites(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseFilterSitesResponse(rsp)
-}
-
-// ListFlightsWithResponse request returning *ListFlightsResponse
-func (c *ClientWithResponses) ListFlightsWithResponse(ctx context.Context, params *ListFlightsParams, reqEditors ...RequestEditorFn) (*ListFlightsResponse, error) {
-	rsp, err := c.ListFlights(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListFlightsResponse(rsp)
-}
-
-// CreateFlightWithBodyWithResponse request with arbitrary body returning *CreateFlightResponse
-func (c *ClientWithResponses) CreateFlightWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFlightResponse, error) {
-	rsp, err := c.CreateFlightWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateFlightResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateFlightWithResponse(ctx context.Context, body CreateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFlightResponse, error) {
-	rsp, err := c.CreateFlight(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateFlightResponse(rsp)
-}
-
-// GetFlightWithResponse request returning *GetFlightResponse
-func (c *ClientWithResponses) GetFlightWithResponse(ctx context.Context, flightId int, params *GetFlightParams, reqEditors ...RequestEditorFn) (*GetFlightResponse, error) {
-	rsp, err := c.GetFlight(ctx, flightId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetFlightResponse(rsp)
-}
-
-// UpdateFlightWithBodyWithResponse request with arbitrary body returning *UpdateFlightResponse
-func (c *ClientWithResponses) UpdateFlightWithBodyWithResponse(ctx context.Context, flightId int, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateFlightResponse, error) {
-	rsp, err := c.UpdateFlightWithBody(ctx, flightId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateFlightResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateFlightWithResponse(ctx context.Context, flightId int, body UpdateFlightJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateFlightResponse, error) {
-	rsp, err := c.UpdateFlight(ctx, flightId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateFlightResponse(rsp)
-}
-
-// GetFlightCategoriesForFlightWithResponse request returning *GetFlightCategoriesForFlightResponse
-func (c *ClientWithResponses) GetFlightCategoriesForFlightWithResponse(ctx context.Context, flightId int32, params *GetFlightCategoriesForFlightParams, reqEditors ...RequestEditorFn) (*GetFlightCategoriesForFlightResponse, error) {
-	rsp, err := c.GetFlightCategoriesForFlight(ctx, flightId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetFlightCategoriesForFlightResponse(rsp)
-}
-
-// CreateFlightCategoryWithBodyWithResponse request with arbitrary body returning *CreateFlightCategoryResponse
-func (c *ClientWithResponses) CreateFlightCategoryWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateFlightCategoryResponse, error) {
-	rsp, err := c.CreateFlightCategoryWithBody(ctx, flightId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateFlightCategoryResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateFlightCategoryWithResponse(ctx context.Context, flightId int32, body CreateFlightCategoryJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateFlightCategoryResponse, error) {
-	rsp, err := c.CreateFlightCategory(ctx, flightId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateFlightCategoryResponse(rsp)
-}
-
-// DeleteFlightCategoryWithResponse request returning *DeleteFlightCategoryResponse
-func (c *ClientWithResponses) DeleteFlightCategoryWithResponse(ctx context.Context, flightId int32, flightCategoryId int32, reqEditors ...RequestEditorFn) (*DeleteFlightCategoryResponse, error) {
-	rsp, err := c.DeleteFlightCategory(ctx, flightId, flightCategoryId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteFlightCategoryResponse(rsp)
-}
-
-// CreateAdWithBodyWithResponse request with arbitrary body returning *CreateAdResponse
-func (c *ClientWithResponses) CreateAdWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateAdResponse, error) {
-	rsp, err := c.CreateAdWithBody(ctx, flightId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateAdResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateAdWithResponse(ctx context.Context, flightId int32, body CreateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateAdResponse, error) {
-	rsp, err := c.CreateAd(ctx, flightId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateAdResponse(rsp)
-}
-
-// UpdateAdWithBodyWithResponse request with arbitrary body returning *UpdateAdResponse
-func (c *ClientWithResponses) UpdateAdWithBodyWithResponse(ctx context.Context, flightId int32, adId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateAdResponse, error) {
-	rsp, err := c.UpdateAdWithBody(ctx, flightId, adId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateAdResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateAdWithResponse(ctx context.Context, flightId int32, adId int32, body UpdateAdJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateAdResponse, error) {
-	rsp, err := c.UpdateAd(ctx, flightId, adId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateAdResponse(rsp)
-}
-
-// ListAdsForFlightWithResponse request returning *ListAdsForFlightResponse
-func (c *ClientWithResponses) ListAdsForFlightWithResponse(ctx context.Context, flightId int32, params *ListAdsForFlightParams, reqEditors ...RequestEditorFn) (*ListAdsForFlightResponse, error) {
-	rsp, err := c.ListAdsForFlight(ctx, flightId, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListAdsForFlightResponse(rsp)
-}
-
-// CreateGeoTargetWithBodyWithResponse request with arbitrary body returning *CreateGeoTargetResponse
-func (c *ClientWithResponses) CreateGeoTargetWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateGeoTargetResponse, error) {
-	rsp, err := c.CreateGeoTargetWithBody(ctx, flightId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateGeoTargetResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateGeoTargetWithResponse(ctx context.Context, flightId int32, body CreateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateGeoTargetResponse, error) {
-	rsp, err := c.CreateGeoTarget(ctx, flightId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateGeoTargetResponse(rsp)
-}
-
-// GetGeoTargetWithResponse request returning *GetGeoTargetResponse
-func (c *ClientWithResponses) GetGeoTargetWithResponse(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*GetGeoTargetResponse, error) {
-	rsp, err := c.GetGeoTarget(ctx, flightId, locationId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetGeoTargetResponse(rsp)
-}
-
-// UpdateGeoTargetWithBodyWithResponse request with arbitrary body returning *UpdateGeoTargetResponse
-func (c *ClientWithResponses) UpdateGeoTargetWithBodyWithResponse(ctx context.Context, flightId int32, locationId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateGeoTargetResponse, error) {
-	rsp, err := c.UpdateGeoTargetWithBody(ctx, flightId, locationId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateGeoTargetResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateGeoTargetWithResponse(ctx context.Context, flightId int32, locationId int32, body UpdateGeoTargetJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateGeoTargetResponse, error) {
-	rsp, err := c.UpdateGeoTarget(ctx, flightId, locationId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateGeoTargetResponse(rsp)
-}
-
-// DeleteGeoTargetWithResponse request returning *DeleteGeoTargetResponse
-func (c *ClientWithResponses) DeleteGeoTargetWithResponse(ctx context.Context, flightId int32, locationId int32, reqEditors ...RequestEditorFn) (*DeleteGeoTargetResponse, error) {
-	rsp, err := c.DeleteGeoTarget(ctx, flightId, locationId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteGeoTargetResponse(rsp)
-}
-
-// CreateSiteZoneTargetingWithBodyWithResponse request with arbitrary body returning *CreateSiteZoneTargetingResponse
-func (c *ClientWithResponses) CreateSiteZoneTargetingWithBodyWithResponse(ctx context.Context, flightId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateSiteZoneTargetingResponse, error) {
-	rsp, err := c.CreateSiteZoneTargetingWithBody(ctx, flightId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateSiteZoneTargetingResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, body CreateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateSiteZoneTargetingResponse, error) {
-	rsp, err := c.CreateSiteZoneTargeting(ctx, flightId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateSiteZoneTargetingResponse(rsp)
-}
-
-// GetSiteZoneTargetingWithResponse request returning *GetSiteZoneTargetingResponse
-func (c *ClientWithResponses) GetSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*GetSiteZoneTargetingResponse, error) {
-	rsp, err := c.GetSiteZoneTargeting(ctx, flightId, siteZoneTargetingId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetSiteZoneTargetingResponse(rsp)
-}
-
-// UpdateSiteZoneTargetingWithBodyWithResponse request with arbitrary body returning *UpdateSiteZoneTargetingResponse
-func (c *ClientWithResponses) UpdateSiteZoneTargetingWithBodyWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteZoneTargetingResponse, error) {
-	rsp, err := c.UpdateSiteZoneTargetingWithBody(ctx, flightId, siteZoneTargetingId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateSiteZoneTargetingResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, body UpdateSiteZoneTargetingJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteZoneTargetingResponse, error) {
-	rsp, err := c.UpdateSiteZoneTargeting(ctx, flightId, siteZoneTargetingId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateSiteZoneTargetingResponse(rsp)
-}
-
-// DeleteSiteZoneTargetingWithResponse request returning *DeleteSiteZoneTargetingResponse
-func (c *ClientWithResponses) DeleteSiteZoneTargetingWithResponse(ctx context.Context, flightId int32, siteZoneTargetingId int32, reqEditors ...RequestEditorFn) (*DeleteSiteZoneTargetingResponse, error) {
-	rsp, err := c.DeleteSiteZoneTargeting(ctx, flightId, siteZoneTargetingId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeleteSiteZoneTargetingResponse(rsp)
-}
-
-// ListPrioritiesWithResponse request returning *ListPrioritiesResponse
-func (c *ClientWithResponses) ListPrioritiesWithResponse(ctx context.Context, params *ListPrioritiesParams, reqEditors ...RequestEditorFn) (*ListPrioritiesResponse, error) {
-	rsp, err := c.ListPriorities(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListPrioritiesResponse(rsp)
-}
-
-// CreatePriorityWithBodyWithResponse request with arbitrary body returning *CreatePriorityResponse
-func (c *ClientWithResponses) CreatePriorityWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePriorityResponse, error) {
-	rsp, err := c.CreatePriorityWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreatePriorityResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreatePriorityWithResponse(ctx context.Context, body CreatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePriorityResponse, error) {
-	rsp, err := c.CreatePriority(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreatePriorityResponse(rsp)
-}
-
-// GetPriorityWithResponse request returning *GetPriorityResponse
-func (c *ClientWithResponses) GetPriorityWithResponse(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*GetPriorityResponse, error) {
-	rsp, err := c.GetPriority(ctx, priorityId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetPriorityResponse(rsp)
-}
-
-// UpdatePriorityWithBodyWithResponse request with arbitrary body returning *UpdatePriorityResponse
-func (c *ClientWithResponses) UpdatePriorityWithBodyWithResponse(ctx context.Context, priorityId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePriorityResponse, error) {
-	rsp, err := c.UpdatePriorityWithBody(ctx, priorityId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdatePriorityResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdatePriorityWithResponse(ctx context.Context, priorityId int32, body UpdatePriorityJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePriorityResponse, error) {
-	rsp, err := c.UpdatePriority(ctx, priorityId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdatePriorityResponse(rsp)
-}
-
-// DeletePriorityWithResponse request returning *DeletePriorityResponse
-func (c *ClientWithResponses) DeletePriorityWithResponse(ctx context.Context, priorityId int32, reqEditors ...RequestEditorFn) (*DeletePriorityResponse, error) {
-	rsp, err := c.DeletePriority(ctx, priorityId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseDeletePriorityResponse(rsp)
-}
-
-// ListMetroCodesInRegionWithResponse request returning *ListMetroCodesInRegionResponse
-func (c *ClientWithResponses) ListMetroCodesInRegionWithResponse(ctx context.Context, regionCode string, reqEditors ...RequestEditorFn) (*ListMetroCodesInRegionResponse, error) {
-	rsp, err := c.ListMetroCodesInRegion(ctx, regionCode, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListMetroCodesInRegionResponse(rsp)
+	return ParseFilterSiteResponse(rsp)
 }
 
 // ListSitesWithResponse request returning *ListSitesResponse
@@ -9210,8 +3135,8 @@ func (c *ClientWithResponses) CreateSiteWithResponse(ctx context.Context, body C
 }
 
 // GetSiteWithResponse request returning *GetSiteResponse
-func (c *ClientWithResponses) GetSiteWithResponse(ctx context.Context, siteId int32, reqEditors ...RequestEditorFn) (*GetSiteResponse, error) {
-	rsp, err := c.GetSite(ctx, siteId, reqEditors...)
+func (c *ClientWithResponses) GetSiteWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetSiteResponse, error) {
+	rsp, err := c.GetSite(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -9219,16 +3144,16 @@ func (c *ClientWithResponses) GetSiteWithResponse(ctx context.Context, siteId in
 }
 
 // UpdateSiteWithBodyWithResponse request with arbitrary body returning *UpdateSiteResponse
-func (c *ClientWithResponses) UpdateSiteWithBodyWithResponse(ctx context.Context, siteId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error) {
-	rsp, err := c.UpdateSiteWithBody(ctx, siteId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateSiteWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error) {
+	rsp, err := c.UpdateSiteWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateSiteResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateSiteWithResponse(ctx context.Context, siteId int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error) {
-	rsp, err := c.UpdateSite(ctx, siteId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateSiteWithResponse(ctx context.Context, id int32, body UpdateSiteJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateSiteResponse, error) {
+	rsp, err := c.UpdateSite(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -9262,8 +3187,8 @@ func (c *ClientWithResponses) CreateZoneWithResponse(ctx context.Context, body C
 }
 
 // GetZoneWithResponse request returning *GetZoneResponse
-func (c *ClientWithResponses) GetZoneWithResponse(ctx context.Context, zoneId int32, reqEditors ...RequestEditorFn) (*GetZoneResponse, error) {
-	rsp, err := c.GetZone(ctx, zoneId, reqEditors...)
+func (c *ClientWithResponses) GetZoneWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetZoneResponse, error) {
+	rsp, err := c.GetZone(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -9271,124 +3196,20 @@ func (c *ClientWithResponses) GetZoneWithResponse(ctx context.Context, zoneId in
 }
 
 // UpdateZoneWithBodyWithResponse request with arbitrary body returning *UpdateZoneResponse
-func (c *ClientWithResponses) UpdateZoneWithBodyWithResponse(ctx context.Context, zoneId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error) {
-	rsp, err := c.UpdateZoneWithBody(ctx, zoneId, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdateZoneWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error) {
+	rsp, err := c.UpdateZoneWithBody(ctx, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateZoneResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdateZoneWithResponse(ctx context.Context, zoneId int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error) {
-	rsp, err := c.UpdateZone(ctx, zoneId, body, reqEditors...)
+func (c *ClientWithResponses) UpdateZoneWithResponse(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error) {
+	rsp, err := c.UpdateZone(ctx, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdateZoneResponse(rsp)
-}
-
-// ListCreativeTemplatesWithResponse request returning *ListCreativeTemplatesResponse
-func (c *ClientWithResponses) ListCreativeTemplatesWithResponse(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*ListCreativeTemplatesResponse, error) {
-	rsp, err := c.ListCreativeTemplates(ctx, params, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseListCreativeTemplatesResponse(rsp)
-}
-
-// CreateCreativeTemplateWithBodyWithResponse request with arbitrary body returning *CreateCreativeTemplateResponse
-func (c *ClientWithResponses) CreateCreativeTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error) {
-	rsp, err := c.CreateCreativeTemplateWithBody(ctx, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateCreativeTemplateResponse(rsp)
-}
-
-func (c *ClientWithResponses) CreateCreativeTemplateWithResponse(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error) {
-	rsp, err := c.CreateCreativeTemplate(ctx, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseCreateCreativeTemplateResponse(rsp)
-}
-
-// GetCreativeTemplateWithResponse request returning *GetCreativeTemplateResponse
-func (c *ClientWithResponses) GetCreativeTemplateWithResponse(ctx context.Context, creativeTemplateId int32, reqEditors ...RequestEditorFn) (*GetCreativeTemplateResponse, error) {
-	rsp, err := c.GetCreativeTemplate(ctx, creativeTemplateId, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseGetCreativeTemplateResponse(rsp)
-}
-
-// UpdateCreativeTemplateWithBodyWithResponse request with arbitrary body returning *UpdateCreativeTemplateResponse
-func (c *ClientWithResponses) UpdateCreativeTemplateWithBodyWithResponse(ctx context.Context, creativeTemplateId int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error) {
-	rsp, err := c.UpdateCreativeTemplateWithBody(ctx, creativeTemplateId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateCreativeTemplateResponse(rsp)
-}
-
-func (c *ClientWithResponses) UpdateCreativeTemplateWithResponse(ctx context.Context, creativeTemplateId int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error) {
-	rsp, err := c.UpdateCreativeTemplate(ctx, creativeTemplateId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseUpdateCreativeTemplateResponse(rsp)
-}
-
-// ParseGetAdResponse parses an HTTP response from a GetAdWithResponse call
-func ParseGetAdResponse(rsp *http.Response) (*GetAdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetAdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Ad
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetAdTrackingUrlsResponse parses an HTTP response from a GetAdTrackingUrlsWithResponse call
-func ParseGetAdTrackingUrlsResponse(rsp *http.Response) (*GetAdTrackingUrlsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetAdTrackingUrlsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest TrackingDetails
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
 }
 
 // ParseListAdTypesResponse parses an HTTP response from a ListAdTypesWithResponse call
@@ -9459,370 +3280,6 @@ func ParseDeleteAdTypeResponse(rsp *http.Response) (*DeleteAdTypeResponse, error
 	return response, nil
 }
 
-// ParseListAdvertisersResponse parses an HTTP response from a ListAdvertisersWithResponse call
-func ParseListAdvertisersResponse(rsp *http.Response) (*ListAdvertisersResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListAdvertisersResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AdvertiserList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateAdvertiserResponse parses an HTTP response from a CreateAdvertiserWithResponse call
-func ParseCreateAdvertiserResponse(rsp *http.Response) (*CreateAdvertiserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateAdvertiserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Advertiser
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseSearchAdvertisersResponse parses an HTTP response from a SearchAdvertisersWithResponse call
-func ParseSearchAdvertisersResponse(rsp *http.Response) (*SearchAdvertisersResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &SearchAdvertisersResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AdvertiserList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseListCreativesForAdvertiserResponse parses an HTTP response from a ListCreativesForAdvertiserWithResponse call
-func ParseListCreativesForAdvertiserResponse(rsp *http.Response) (*ListCreativesForAdvertiserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListCreativesForAdvertiserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CreativeList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetAdvertiserResponse parses an HTTP response from a GetAdvertiserWithResponse call
-func ParseGetAdvertiserResponse(rsp *http.Response) (*GetAdvertiserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetAdvertiserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Advertiser
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateAdvertiserResponse parses an HTTP response from a UpdateAdvertiserWithResponse call
-func ParseUpdateAdvertiserResponse(rsp *http.Response) (*UpdateAdvertiserResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateAdvertiserResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Advertiser
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetTrackingCodeResponse parses an HTTP response from a GetTrackingCodeWithResponse call
-func ParseGetTrackingCodeResponse(rsp *http.Response) (*GetTrackingCodeResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetTrackingCodeResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest TrackingPixel
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseListCampaignsResponse parses an HTTP response from a ListCampaignsWithResponse call
-func ParseListCampaignsResponse(rsp *http.Response) (*ListCampaignsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListCampaignsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CampaignList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateCampaignResponse parses an HTTP response from a CreateCampaignWithResponse call
-func ParseCreateCampaignResponse(rsp *http.Response) (*CreateCampaignResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateCampaignResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Campaign
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseSearchCampaignsResponse parses an HTTP response from a SearchCampaignsWithResponse call
-func ParseSearchCampaignsResponse(rsp *http.Response) (*SearchCampaignsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &SearchCampaignsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CampaignList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetCampaignResponse parses an HTTP response from a GetCampaignWithResponse call
-func ParseGetCampaignResponse(rsp *http.Response) (*GetCampaignResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetCampaignResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Campaign
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateCampaignResponse parses an HTTP response from a UpdateCampaignWithResponse call
-func ParseUpdateCampaignResponse(rsp *http.Response) (*UpdateCampaignResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateCampaignResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Campaign
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseListFlightsForCampaignResponse parses an HTTP response from a ListFlightsForCampaignWithResponse call
-func ParseListFlightsForCampaignResponse(rsp *http.Response) (*ListFlightsForCampaignResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListFlightsForCampaignResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest FlightList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetFlightCategoriesResponse parses an HTTP response from a GetFlightCategoriesWithResponse call
-func ParseGetFlightCategoriesResponse(rsp *http.Response) (*GetFlightCategoriesResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetFlightCategoriesResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest FlightCategoryList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseListChannelsResponse parses an HTTP response from a ListChannelsWithResponse call
 func ParseListChannelsResponse(rsp *http.Response) (*ListChannelsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -9870,6 +3327,116 @@ func ParseCreateChannelResponse(rsp *http.Response) (*CreateChannelResponse, err
 		}
 		response.JSON200 = &dest
 
+	}
+
+	return response, nil
+}
+
+// ParseListForChannelAdTypeResponse parses an HTTP response from a ListForChannelAdTypeWithResponse call
+func ParseListForChannelAdTypeResponse(rsp *http.Response) (*ListForChannelAdTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListForChannelAdTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AdTypeList
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateForChannelAdTypeResponse parses an HTTP response from a CreateForChannelAdTypeWithResponse call
+func ParseCreateForChannelAdTypeResponse(rsp *http.Response) (*CreateForChannelAdTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateForChannelAdTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AdType
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteForChannelAdTypeResponse parses an HTTP response from a DeleteForChannelAdTypeWithResponse call
+func ParseDeleteForChannelAdTypeResponse(rsp *http.Response) (*DeleteForChannelAdTypeResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteForChannelAdTypeResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetChannelSiteMapResponse parses an HTTP response from a GetChannelSiteMapWithResponse call
+func ParseGetChannelSiteMapResponse(rsp *http.Response) (*GetChannelSiteMapResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetChannelSiteMapResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ChannelSiteMap
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteChannelSiteMapResponse parses an HTTP response from a DeleteChannelSiteMapWithResponse call
+func ParseDeleteChannelSiteMapResponse(rsp *http.Response) (*DeleteChannelSiteMapResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteChannelSiteMapResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
 	}
 
 	return response, nil
@@ -9927,74 +3494,6 @@ func ParseUpdateChannelResponse(rsp *http.Response) (*UpdateChannelResponse, err
 	return response, nil
 }
 
-// ParseListAdTypesForChannelResponse parses an HTTP response from a ListAdTypesForChannelWithResponse call
-func ParseListAdTypesForChannelResponse(rsp *http.Response) (*ListAdTypesForChannelResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListAdTypesForChannelResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AdTypeList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateAdTypeForChannelResponse parses an HTTP response from a CreateAdTypeForChannelWithResponse call
-func ParseCreateAdTypeForChannelResponse(rsp *http.Response) (*CreateAdTypeForChannelResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateAdTypeForChannelResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AdType
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteAdTypeForChannelResponse parses an HTTP response from a DeleteAdTypeForChannelWithResponse call
-func ParseDeleteAdTypeForChannelResponse(rsp *http.Response) (*DeleteAdTypeForChannelResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteAdTypeForChannelResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
 // ParseDeleteChannelResponse parses an HTTP response from a DeleteChannelWithResponse call
 func ParseDeleteChannelResponse(rsp *http.Response) (*DeleteChannelResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -10011,15 +3510,15 @@ func ParseDeleteChannelResponse(rsp *http.Response) (*DeleteChannelResponse, err
 	return response, nil
 }
 
-// ParseGetPrioritiesForChannelResponse parses an HTTP response from a GetPrioritiesForChannelWithResponse call
-func ParseGetPrioritiesForChannelResponse(rsp *http.Response) (*GetPrioritiesForChannelResponse, error) {
+// ParseGetPrioritiesChannelResponse parses an HTTP response from a GetPrioritiesChannelWithResponse call
+func ParseGetPrioritiesChannelResponse(rsp *http.Response) (*GetPrioritiesChannelResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPrioritiesForChannelResponse{
+	response := &GetPrioritiesChannelResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -10032,48 +3531,6 @@ func ParseGetPrioritiesForChannelResponse(rsp *http.Response) (*GetPrioritiesFor
 		}
 		response.JSON200 = &dest
 
-	}
-
-	return response, nil
-}
-
-// ParseGetChannelSiteMapResponse parses an HTTP response from a GetChannelSiteMapWithResponse call
-func ParseGetChannelSiteMapResponse(rsp *http.Response) (*GetChannelSiteMapResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetChannelSiteMapResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ChannelSiteMap
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteChannelSiteMapResponse parses an HTTP response from a DeleteChannelSiteMapWithResponse call
-func ParseDeleteChannelSiteMapResponse(rsp *http.Response) (*DeleteChannelSiteMapResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteChannelSiteMapResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
 	}
 
 	return response, nil
@@ -10157,22 +3614,22 @@ func ParseUpdateChannelSiteMapResponse(rsp *http.Response) (*UpdateChannelSiteMa
 	return response, nil
 }
 
-// ParseListChannelsForSiteResponse parses an HTTP response from a ListChannelsForSiteWithResponse call
-func ParseListChannelsForSiteResponse(rsp *http.Response) (*ListChannelsForSiteResponse, error) {
+// ParseListChannelsForSiteChannelSiteMapResponse parses an HTTP response from a ListChannelsForSiteChannelSiteMapWithResponse call
+func ParseListChannelsForSiteChannelSiteMapResponse(rsp *http.Response) (*ListChannelsForSiteChannelSiteMapResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListChannelsForSiteResponse{
+	response := &ListChannelsForSiteChannelSiteMapResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SchemasChannelList
+		var dest ChannelList
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -10183,773 +3640,17 @@ func ParseListChannelsForSiteResponse(rsp *http.Response) (*ListChannelsForSiteR
 	return response, nil
 }
 
-// ParseListCountriesResponse parses an HTTP response from a ListCountriesWithResponse call
-func ParseListCountriesResponse(rsp *http.Response) (*ListCountriesResponse, error) {
+// ParseFilterSiteResponse parses an HTTP response from a FilterSiteWithResponse call
+func ParseFilterSiteResponse(rsp *http.Response) (*FilterSiteResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListCountriesResponse{
+	response := &FilterSiteResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Country
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseListRegionsForCountryResponse parses an HTTP response from a ListRegionsForCountryWithResponse call
-func ParseListRegionsForCountryResponse(rsp *http.Response) (*ListRegionsForCountryResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListRegionsForCountryResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Country
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateCreativeResponse parses an HTTP response from a CreateCreativeWithResponse call
-func ParseCreateCreativeResponse(rsp *http.Response) (*CreateCreativeResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateCreativeResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Creative
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetCreativeResponse parses an HTTP response from a GetCreativeWithResponse call
-func ParseGetCreativeResponse(rsp *http.Response) (*GetCreativeResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetCreativeResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Creative
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateCreativeResponse parses an HTTP response from a UpdateCreativeWithResponse call
-func ParseUpdateCreativeResponse(rsp *http.Response) (*UpdateCreativeResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateCreativeResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Creative
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUploadCreativeImageResponse parses an HTTP response from a UploadCreativeImageWithResponse call
-func ParseUploadCreativeImageResponse(rsp *http.Response) (*UploadCreativeImageResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UploadCreativeImageResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Creative
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseFilterFlightsResponse parses an HTTP response from a FilterFlightsWithResponse call
-func ParseFilterFlightsResponse(rsp *http.Response) (*FilterFlightsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FilterFlightsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseFilterSitesResponse parses an HTTP response from a FilterSitesWithResponse call
-func ParseFilterSitesResponse(rsp *http.Response) (*FilterSitesResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &FilterSitesResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseListFlightsResponse parses an HTTP response from a ListFlightsWithResponse call
-func ParseListFlightsResponse(rsp *http.Response) (*ListFlightsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListFlightsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest FlightList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateFlightResponse parses an HTTP response from a CreateFlightWithResponse call
-func ParseCreateFlightResponse(rsp *http.Response) (*CreateFlightResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateFlightResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Flight
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetFlightResponse parses an HTTP response from a GetFlightWithResponse call
-func ParseGetFlightResponse(rsp *http.Response) (*GetFlightResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetFlightResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Flight
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateFlightResponse parses an HTTP response from a UpdateFlightWithResponse call
-func ParseUpdateFlightResponse(rsp *http.Response) (*UpdateFlightResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateFlightResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Flight
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetFlightCategoriesForFlightResponse parses an HTTP response from a GetFlightCategoriesForFlightWithResponse call
-func ParseGetFlightCategoriesForFlightResponse(rsp *http.Response) (*GetFlightCategoriesForFlightResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetFlightCategoriesForFlightResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest FlightCategoryList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateFlightCategoryResponse parses an HTTP response from a CreateFlightCategoryWithResponse call
-func ParseCreateFlightCategoryResponse(rsp *http.Response) (*CreateFlightCategoryResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateFlightCategoryResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest FlightCategory
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteFlightCategoryResponse parses an HTTP response from a DeleteFlightCategoryWithResponse call
-func ParseDeleteFlightCategoryResponse(rsp *http.Response) (*DeleteFlightCategoryResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteFlightCategoryResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseCreateAdResponse parses an HTTP response from a CreateAdWithResponse call
-func ParseCreateAdResponse(rsp *http.Response) (*CreateAdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateAdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Ad
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateAdResponse parses an HTTP response from a UpdateAdWithResponse call
-func ParseUpdateAdResponse(rsp *http.Response) (*UpdateAdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateAdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Ad
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseListAdsForFlightResponse parses an HTTP response from a ListAdsForFlightWithResponse call
-func ParseListAdsForFlightResponse(rsp *http.Response) (*ListAdsForFlightResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListAdsForFlightResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AdList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateGeoTargetResponse parses an HTTP response from a CreateGeoTargetWithResponse call
-func ParseCreateGeoTargetResponse(rsp *http.Response) (*CreateGeoTargetResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateGeoTargetResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest GeoTarget
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetGeoTargetResponse parses an HTTP response from a GetGeoTargetWithResponse call
-func ParseGetGeoTargetResponse(rsp *http.Response) (*GetGeoTargetResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetGeoTargetResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest GeoTarget
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateGeoTargetResponse parses an HTTP response from a UpdateGeoTargetWithResponse call
-func ParseUpdateGeoTargetResponse(rsp *http.Response) (*UpdateGeoTargetResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateGeoTargetResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest GeoTarget
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteGeoTargetResponse parses an HTTP response from a DeleteGeoTargetWithResponse call
-func ParseDeleteGeoTargetResponse(rsp *http.Response) (*DeleteGeoTargetResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteGeoTargetResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseCreateSiteZoneTargetingResponse parses an HTTP response from a CreateSiteZoneTargetingWithResponse call
-func ParseCreateSiteZoneTargetingResponse(rsp *http.Response) (*CreateSiteZoneTargetingResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateSiteZoneTargetingResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SiteZone
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetSiteZoneTargetingResponse parses an HTTP response from a GetSiteZoneTargetingWithResponse call
-func ParseGetSiteZoneTargetingResponse(rsp *http.Response) (*GetSiteZoneTargetingResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetSiteZoneTargetingResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SiteZone
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateSiteZoneTargetingResponse parses an HTTP response from a UpdateSiteZoneTargetingWithResponse call
-func ParseUpdateSiteZoneTargetingResponse(rsp *http.Response) (*UpdateSiteZoneTargetingResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateSiteZoneTargetingResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest SiteZone
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeleteSiteZoneTargetingResponse parses an HTTP response from a DeleteSiteZoneTargetingWithResponse call
-func ParseDeleteSiteZoneTargetingResponse(rsp *http.Response) (*DeleteSiteZoneTargetingResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeleteSiteZoneTargetingResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseListPrioritiesResponse parses an HTTP response from a ListPrioritiesWithResponse call
-func ParseListPrioritiesResponse(rsp *http.Response) (*ListPrioritiesResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListPrioritiesResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PriorityList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreatePriorityResponse parses an HTTP response from a CreatePriorityWithResponse call
-func ParseCreatePriorityResponse(rsp *http.Response) (*CreatePriorityResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreatePriorityResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Priority
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetPriorityResponse parses an HTTP response from a GetPriorityWithResponse call
-func ParseGetPriorityResponse(rsp *http.Response) (*GetPriorityResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetPriorityResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Priority
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdatePriorityResponse parses an HTTP response from a UpdatePriorityWithResponse call
-func ParseUpdatePriorityResponse(rsp *http.Response) (*UpdatePriorityResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdatePriorityResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Priority
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseDeletePriorityResponse parses an HTTP response from a DeletePriorityWithResponse call
-func ParseDeletePriorityResponse(rsp *http.Response) (*DeletePriorityResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &DeletePriorityResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	return response, nil
-}
-
-// ParseListMetroCodesInRegionResponse parses an HTTP response from a ListMetroCodesInRegionWithResponse call
-func ParseListMetroCodesInRegionResponse(rsp *http.Response) (*ListMetroCodesInRegionResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListMetroCodesInRegionResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest []Metro
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
 	}
 
 	return response, nil
@@ -11153,110 +3854,6 @@ func ParseUpdateZoneResponse(rsp *http.Response) (*UpdateZoneResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Zone
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseListCreativeTemplatesResponse parses an HTTP response from a ListCreativeTemplatesWithResponse call
-func ParseListCreativeTemplatesResponse(rsp *http.Response) (*ListCreativeTemplatesResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &ListCreativeTemplatesResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CreativeTemplateList
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseCreateCreativeTemplateResponse parses an HTTP response from a CreateCreativeTemplateWithResponse call
-func ParseCreateCreativeTemplateResponse(rsp *http.Response) (*CreateCreativeTemplateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &CreateCreativeTemplateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CreativeTemplate
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetCreativeTemplateResponse parses an HTTP response from a GetCreativeTemplateWithResponse call
-func ParseGetCreativeTemplateResponse(rsp *http.Response) (*GetCreativeTemplateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetCreativeTemplateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CreativeTemplate
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseUpdateCreativeTemplateResponse parses an HTTP response from a UpdateCreativeTemplateWithResponse call
-func ParseUpdateCreativeTemplateResponse(rsp *http.Response) (*UpdateCreativeTemplateResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &UpdateCreativeTemplateResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest CreativeTemplate
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

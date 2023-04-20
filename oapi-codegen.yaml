@@ -1,0 +1,5 @@
+package: client
+generate:
+  client: true
+  models: true
+output: adzerk_management_client_gen.go
