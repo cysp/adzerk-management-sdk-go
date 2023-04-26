@@ -20,6 +20,31 @@ const (
 	ApiKeyAuthScopes = "ApiKeyAuth.Scopes"
 )
 
+// Defines values for CreativeTemplateUpdateOperationOp.
+const (
+	Delete      CreativeTemplateUpdateOperationOp = "Delete"
+	InsertAfter CreativeTemplateUpdateOperationOp = "InsertAfter"
+	Update      CreativeTemplateUpdateOperationOp = "Update"
+)
+
+// Defines values for CreateCreativeTemplateJSONBodyContentsType.
+const (
+	CSS                CreateCreativeTemplateJSONBodyContentsType = "CSS"
+	HTML               CreateCreativeTemplateJSONBodyContentsType = "HTML"
+	JavaScript         CreateCreativeTemplateJSONBodyContentsType = "JavaScript"
+	JavaScriptExternal CreateCreativeTemplateJSONBodyContentsType = "JavaScriptExternal"
+	Raw                CreateCreativeTemplateJSONBodyContentsType = "Raw"
+)
+
+// Defines values for CreateCreativeTemplateJSONBodyFieldsType.
+const (
+	Array        CreateCreativeTemplateJSONBodyFieldsType = "Array"
+	ExternalFile CreateCreativeTemplateJSONBodyFieldsType = "ExternalFile"
+	File         CreateCreativeTemplateJSONBodyFieldsType = "File"
+	Object       CreateCreativeTemplateJSONBodyFieldsType = "Object"
+	String       CreateCreativeTemplateJSONBodyFieldsType = "String"
+)
+
 // AdType defines model for AdType.
 type AdType struct {
 	Height int32   `json:"Height"`
@@ -36,6 +61,9 @@ type AdTypeList struct {
 	TotalItems int64    `json:"totalItems"`
 	TotalPages int32    `json:"totalPages"`
 }
+
+// AnyValue defines model for AnyValue.
+type AnyValue = interface{}
 
 // Channel defines model for Channel.
 type Channel struct {
@@ -71,6 +99,52 @@ type ChannelSiteMapList struct {
 	TotalItems int64            `json:"totalItems"`
 	TotalPages int32            `json:"totalPages"`
 }
+
+// CreativeTemplate defines model for CreativeTemplate.
+type CreativeTemplate struct {
+	Contents    []CreativeTemplateContents `json:"Contents"`
+	Description string                     `json:"Description"`
+	Fields      []CreativeTemplateField    `json:"Fields"`
+	Id          int32                      `json:"Id"`
+	IsArchived  bool                       `json:"IsArchived"`
+	Name        string                     `json:"Name"`
+}
+
+// CreativeTemplateContents defines model for CreativeTemplateContents.
+type CreativeTemplateContents struct {
+	Body string `json:"Body"`
+	Type string `json:"Type"`
+}
+
+// CreativeTemplateField defines model for CreativeTemplateField.
+type CreativeTemplateField struct {
+	Default     map[string]interface{} `json:"Default"`
+	Description string                 `json:"Description"`
+	Hidden      bool                   `json:"Hidden"`
+	Name        string                 `json:"Name"`
+	Required    bool                   `json:"Required"`
+	Type        string                 `json:"Type"`
+	Variable    string                 `json:"Variable"`
+}
+
+// CreativeTemplateList defines model for CreativeTemplateList.
+type CreativeTemplateList struct {
+	Items      []CreativeTemplate `json:"items"`
+	Page       int32              `json:"page"`
+	PageSize   int32              `json:"pageSize"`
+	TotalItems int64              `json:"totalItems"`
+	TotalPages int32              `json:"totalPages"`
+}
+
+// CreativeTemplateUpdateOperation defines model for CreativeTemplateUpdateOperation.
+type CreativeTemplateUpdateOperation struct {
+	Op    *CreativeTemplateUpdateOperationOp `json:"Op,omitempty"`
+	Path  []string                           `json:"Path"`
+	Value AnyValue                           `json:"Value"`
+}
+
+// CreativeTemplateUpdateOperationOp defines model for CreativeTemplateUpdateOperation.Op.
+type CreativeTemplateUpdateOperationOp string
 
 // Priority defines model for Priority.
 type Priority struct {
@@ -269,6 +343,47 @@ type UpdateZoneJSONBody struct {
 	SiteId    *int32 `json:"SiteId,omitempty"`
 }
 
+// ListCreativeTemplatesParams defines parameters for ListCreativeTemplates.
+type ListCreativeTemplatesParams struct {
+	// PageSize The size of the page to be returned
+	PageSize *int32 `form:"pageSize,omitempty" json:"pageSize,omitempty"`
+
+	// Page The page number to be returned
+	Page *int32 `form:"page,omitempty" json:"page,omitempty"`
+}
+
+// CreateCreativeTemplateJSONBody defines parameters for CreateCreativeTemplate.
+type CreateCreativeTemplateJSONBody struct {
+	Contents []struct {
+		Body *string                                    `json:"Body"`
+		Type CreateCreativeTemplateJSONBodyContentsType `json:"Type"`
+	} `json:"Contents"`
+	Description string `json:"Description"`
+	Fields      []struct {
+		AdQuery     *bool                                    `json:"AdQuery"`
+		Default     *map[string]interface{}                  `json:"Default"`
+		Description *string                                  `json:"Description"`
+		Hidden      *bool                                    `json:"Hidden,omitempty"`
+		Name        string                                   `json:"Name"`
+		Required    *bool                                    `json:"Required,omitempty"`
+		Type        CreateCreativeTemplateJSONBodyFieldsType `json:"Type"`
+		Variable    string                                   `json:"Variable"`
+	} `json:"Fields"`
+	IsArchived bool   `json:"IsArchived"`
+	Name       string `json:"Name"`
+}
+
+// CreateCreativeTemplateJSONBodyContentsType defines parameters for CreateCreativeTemplate.
+type CreateCreativeTemplateJSONBodyContentsType string
+
+// CreateCreativeTemplateJSONBodyFieldsType defines parameters for CreateCreativeTemplate.
+type CreateCreativeTemplateJSONBodyFieldsType string
+
+// UpdateCreativeTemplateJSONBody defines parameters for UpdateCreativeTemplate.
+type UpdateCreativeTemplateJSONBody struct {
+	Updates []CreativeTemplateUpdateOperation `json:"Updates"`
+}
+
 // CreateAdTypeJSONRequestBody defines body for CreateAdType for application/json ContentType.
 type CreateAdTypeJSONRequestBody CreateAdTypeJSONBody
 
@@ -298,6 +413,12 @@ type CreateZoneJSONRequestBody CreateZoneJSONBody
 
 // UpdateZoneJSONRequestBody defines body for UpdateZone for application/json ContentType.
 type UpdateZoneJSONRequestBody UpdateZoneJSONBody
+
+// CreateCreativeTemplateJSONRequestBody defines body for CreateCreativeTemplate for application/json ContentType.
+type CreateCreativeTemplateJSONRequestBody CreateCreativeTemplateJSONBody
+
+// UpdateCreativeTemplateJSONRequestBody defines body for UpdateCreativeTemplate for application/json ContentType.
+type UpdateCreativeTemplateJSONRequestBody UpdateCreativeTemplateJSONBody
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -472,6 +593,22 @@ type ClientInterface interface {
 	UpdateZoneWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdateZone(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ListCreativeTemplates request
+	ListCreativeTemplates(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// CreateCreativeTemplate request with any body
+	CreateCreativeTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	CreateCreativeTemplate(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetCreativeTemplate request
+	GetCreativeTemplate(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// UpdateCreativeTemplate request with any body
+	UpdateCreativeTemplateWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	UpdateCreativeTemplate(ctx context.Context, id int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) ListAdTypes(ctx context.Context, params *ListAdTypesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -908,6 +1045,78 @@ func (c *Client) UpdateZoneWithBody(ctx context.Context, id int32, contentType s
 
 func (c *Client) UpdateZone(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewUpdateZoneRequest(c.Server, id, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) ListCreativeTemplates(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListCreativeTemplatesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCreativeTemplateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCreativeTemplateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) CreateCreativeTemplate(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateCreativeTemplateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetCreativeTemplate(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetCreativeTemplateRequest(c.Server, id)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCreativeTemplateWithBody(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCreativeTemplateRequestWithBody(c.Server, id, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) UpdateCreativeTemplate(ctx context.Context, id int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateCreativeTemplateRequest(c.Server, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -2155,6 +2364,190 @@ func NewUpdateZoneRequestWithBody(server string, id int32, contentType string, b
 	return req, nil
 }
 
+// NewListCreativeTemplatesRequest generates requests for ListCreativeTemplates
+func NewListCreativeTemplatesRequest(server string, params *ListCreativeTemplatesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v2/creative-templates")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	queryValues := queryURL.Query()
+
+	if params.PageSize != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "pageSize", runtime.ParamLocationQuery, *params.PageSize); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	if params.Page != nil {
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "page", runtime.ParamLocationQuery, *params.Page); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+	}
+
+	queryURL.RawQuery = queryValues.Encode()
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateCreativeTemplateRequest calls the generic CreateCreativeTemplate builder with application/json body
+func NewCreateCreativeTemplateRequest(server string, body CreateCreativeTemplateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewCreateCreativeTemplateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewCreateCreativeTemplateRequestWithBody generates requests for CreateCreativeTemplate with any type of body
+func NewCreateCreativeTemplateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v2/creative-templates")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetCreativeTemplateRequest generates requests for GetCreativeTemplate
+func NewGetCreativeTemplateRequest(server string, id int32) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v2/creative-templates/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewUpdateCreativeTemplateRequest calls the generic UpdateCreativeTemplate builder with application/json body
+func NewUpdateCreativeTemplateRequest(server string, id int32, body UpdateCreativeTemplateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewUpdateCreativeTemplateRequestWithBody(server, id, "application/json", bodyReader)
+}
+
+// NewUpdateCreativeTemplateRequestWithBody generates requests for UpdateCreativeTemplate with any type of body
+func NewUpdateCreativeTemplateRequestWithBody(server string, id int32, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/v2/creative-templates/%s/update", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
 	for _, r := range c.RequestEditors {
 		if err := r(ctx, req); err != nil {
@@ -2298,6 +2691,22 @@ type ClientWithResponsesInterface interface {
 	UpdateZoneWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error)
 
 	UpdateZoneWithResponse(ctx context.Context, id int32, body UpdateZoneJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateZoneResponse, error)
+
+	// ListCreativeTemplates request
+	ListCreativeTemplatesWithResponse(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*ListCreativeTemplatesResponse, error)
+
+	// CreateCreativeTemplate request with any body
+	CreateCreativeTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error)
+
+	CreateCreativeTemplateWithResponse(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error)
+
+	// GetCreativeTemplate request
+	GetCreativeTemplateWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetCreativeTemplateResponse, error)
+
+	// UpdateCreativeTemplate request with any body
+	UpdateCreativeTemplateWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error)
+
+	UpdateCreativeTemplateWithResponse(ctx context.Context, id int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error)
 }
 
 type ListAdTypesResponse struct {
@@ -2889,6 +3298,94 @@ func (r UpdateZoneResponse) StatusCode() int {
 	return 0
 }
 
+type ListCreativeTemplatesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CreativeTemplateList
+}
+
+// Status returns HTTPResponse.Status
+func (r ListCreativeTemplatesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListCreativeTemplatesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type CreateCreativeTemplateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CreativeTemplate
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateCreativeTemplateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateCreativeTemplateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetCreativeTemplateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CreativeTemplate
+}
+
+// Status returns HTTPResponse.Status
+func (r GetCreativeTemplateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetCreativeTemplateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type UpdateCreativeTemplateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *CreativeTemplate
+}
+
+// Status returns HTTPResponse.Status
+func (r UpdateCreativeTemplateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r UpdateCreativeTemplateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 // ListAdTypesWithResponse request returning *ListAdTypesResponse
 func (c *ClientWithResponses) ListAdTypesWithResponse(ctx context.Context, params *ListAdTypesParams, reqEditors ...RequestEditorFn) (*ListAdTypesResponse, error) {
 	rsp, err := c.ListAdTypes(ctx, params, reqEditors...)
@@ -3210,6 +3707,58 @@ func (c *ClientWithResponses) UpdateZoneWithResponse(ctx context.Context, id int
 		return nil, err
 	}
 	return ParseUpdateZoneResponse(rsp)
+}
+
+// ListCreativeTemplatesWithResponse request returning *ListCreativeTemplatesResponse
+func (c *ClientWithResponses) ListCreativeTemplatesWithResponse(ctx context.Context, params *ListCreativeTemplatesParams, reqEditors ...RequestEditorFn) (*ListCreativeTemplatesResponse, error) {
+	rsp, err := c.ListCreativeTemplates(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseListCreativeTemplatesResponse(rsp)
+}
+
+// CreateCreativeTemplateWithBodyWithResponse request with arbitrary body returning *CreateCreativeTemplateResponse
+func (c *ClientWithResponses) CreateCreativeTemplateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error) {
+	rsp, err := c.CreateCreativeTemplateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCreativeTemplateResponse(rsp)
+}
+
+func (c *ClientWithResponses) CreateCreativeTemplateWithResponse(ctx context.Context, body CreateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateCreativeTemplateResponse, error) {
+	rsp, err := c.CreateCreativeTemplate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseCreateCreativeTemplateResponse(rsp)
+}
+
+// GetCreativeTemplateWithResponse request returning *GetCreativeTemplateResponse
+func (c *ClientWithResponses) GetCreativeTemplateWithResponse(ctx context.Context, id int32, reqEditors ...RequestEditorFn) (*GetCreativeTemplateResponse, error) {
+	rsp, err := c.GetCreativeTemplate(ctx, id, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetCreativeTemplateResponse(rsp)
+}
+
+// UpdateCreativeTemplateWithBodyWithResponse request with arbitrary body returning *UpdateCreativeTemplateResponse
+func (c *ClientWithResponses) UpdateCreativeTemplateWithBodyWithResponse(ctx context.Context, id int32, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error) {
+	rsp, err := c.UpdateCreativeTemplateWithBody(ctx, id, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCreativeTemplateResponse(rsp)
+}
+
+func (c *ClientWithResponses) UpdateCreativeTemplateWithResponse(ctx context.Context, id int32, body UpdateCreativeTemplateJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateCreativeTemplateResponse, error) {
+	rsp, err := c.UpdateCreativeTemplate(ctx, id, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseUpdateCreativeTemplateResponse(rsp)
 }
 
 // ParseListAdTypesResponse parses an HTTP response from a ListAdTypesWithResponse call
@@ -3854,6 +4403,110 @@ func ParseUpdateZoneResponse(rsp *http.Response) (*UpdateZoneResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest Zone
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListCreativeTemplatesResponse parses an HTTP response from a ListCreativeTemplatesWithResponse call
+func ParseListCreativeTemplatesResponse(rsp *http.Response) (*ListCreativeTemplatesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListCreativeTemplatesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CreativeTemplateList
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateCreativeTemplateResponse parses an HTTP response from a CreateCreativeTemplateWithResponse call
+func ParseCreateCreativeTemplateResponse(rsp *http.Response) (*CreateCreativeTemplateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateCreativeTemplateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CreativeTemplate
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetCreativeTemplateResponse parses an HTTP response from a GetCreativeTemplateWithResponse call
+func ParseGetCreativeTemplateResponse(rsp *http.Response) (*GetCreativeTemplateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetCreativeTemplateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CreativeTemplate
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseUpdateCreativeTemplateResponse parses an HTTP response from a UpdateCreativeTemplateWithResponse call
+func ParseUpdateCreativeTemplateResponse(rsp *http.Response) (*UpdateCreativeTemplateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &UpdateCreativeTemplateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest CreativeTemplate
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
