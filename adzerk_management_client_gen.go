@@ -118,13 +118,13 @@ type CreativeTemplateContents struct {
 
 // CreativeTemplateField defines model for CreativeTemplateField.
 type CreativeTemplateField struct {
-	Default     map[string]interface{} `json:"Default"`
-	Description string                 `json:"Description"`
-	Hidden      bool                   `json:"Hidden"`
-	Name        string                 `json:"Name"`
-	Required    bool                   `json:"Required"`
-	Type        string                 `json:"Type"`
-	Variable    string                 `json:"Variable"`
+	Default     AnyValue `json:"Default"`
+	Description string   `json:"Description"`
+	Hidden      bool     `json:"Hidden"`
+	Name        string   `json:"Name"`
+	Required    bool     `json:"Required"`
+	Type        string   `json:"Type"`
+	Variable    string   `json:"Variable"`
 }
 
 // CreativeTemplateList defines model for CreativeTemplateList.
@@ -354,24 +354,27 @@ type ListCreativeTemplatesParams struct {
 
 // CreateCreativeTemplateJSONBody defines parameters for CreateCreativeTemplate.
 type CreateCreativeTemplateJSONBody struct {
-	Contents []struct {
+	Contents []CreateCreativeTemplateJSONBodyContent `json:"Contents"`
+	Description string `json:"Description"`
+	Fields   []CreateCreativeTemplateJSONBodyField    `json:"Fields"`
+	IsArchived bool   `json:"IsArchived"`
+	Name       string `json:"Name"`
+}
+
+type CreateCreativeTemplateJSONBodyContent struct {
 		Body *string                                    `json:"Body"`
 		Type CreateCreativeTemplateJSONBodyContentsType `json:"Type"`
-	} `json:"Contents"`
-	Description string `json:"Description"`
-	Fields      []struct {
+	}
+type CreateCreativeTemplateJSONBodyField struct {
 		AdQuery     *bool                                    `json:"AdQuery"`
-		Default     *map[string]interface{}                  `json:"Default"`
+		Default     *interface{}                  `json:"Default"`
 		Description *string                                  `json:"Description"`
 		Hidden      *bool                                    `json:"Hidden,omitempty"`
 		Name        string                                   `json:"Name"`
 		Required    *bool                                    `json:"Required,omitempty"`
 		Type        CreateCreativeTemplateJSONBodyFieldsType `json:"Type"`
 		Variable    string                                   `json:"Variable"`
-	} `json:"Fields"`
-	IsArchived bool   `json:"IsArchived"`
-	Name       string `json:"Name"`
-}
+	}
 
 // CreateCreativeTemplateJSONBodyContentsType defines parameters for CreateCreativeTemplate.
 type CreateCreativeTemplateJSONBodyContentsType string
