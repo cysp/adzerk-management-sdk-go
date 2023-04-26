@@ -16,6 +16,7 @@ func NewHttpTestServer() *httptest.Server {
 	addChannelRouteHandlers(r)
 	addSiteRouteHandlers(r)
 	addChannelSiteMapRouteHandlers(r)
+	addUserRouteHandlers(r)
 
 	return httptest.NewServer(r)
 }
