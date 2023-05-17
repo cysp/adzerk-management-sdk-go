@@ -95,7 +95,7 @@ func applyUserCreate(user *adzerk.User, update adzerk.CreateUserJSONRequestBody)
 	} else {
 		user.AccessLevel = adzerk.Read
 	}
-	user.CanAccessStudio = *update.CanAccessStudio
+	// user.CanAccessStudio = *update.CanAccessStudio
 	return user
 }
 
