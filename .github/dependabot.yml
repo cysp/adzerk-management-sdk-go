@@ -7,6 +7,11 @@ updates:
       interval: "weekly"
       timezone: "Australia/Sydney"
 
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "daily"
+
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
