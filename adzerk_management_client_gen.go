@@ -79,6 +79,7 @@ type ChannelSiteMapList struct {
 // Priority defines model for Priority.
 type Priority struct {
 	ChannelId                         *int32   `json:"ChannelId,omitempty"`
+	FloorCPC                          *float32 `json:"FloorCPC,omitempty"`
 	FloorPrice                        *float32 `json:"FloorPrice,omitempty"`
 	Id                                int32    `json:"Id"`
 	IsAdChain                         bool     `json:"IsAdChain"`
@@ -92,6 +93,7 @@ type Priority struct {
 	PassbackTimeout                   *int32   `json:"PassbackTimeout,omitempty"`
 	RelevancyScoreConfig              *string  `json:"RelevancyScoreConfig,omitempty"`
 	RelevancyScoreConfigJSON          *string  `json:"RelevancyScoreConfigJSON,omitempty"`
+	SecondPriceGroupBy                *string  `json:"SecondPriceGroupBy,omitempty"`
 	SelectionAlgorithm                int32    `json:"SelectionAlgorithm"`
 	SerializeRelevancyScoreConfigJSON *bool    `json:"SerializeRelevancyScoreConfigJSON,omitempty"`
 	Weight                            *int32   `json:"Weight,omitempty"`
@@ -99,9 +101,10 @@ type Priority struct {
 
 // Site defines model for Site.
 type Site struct {
-	Id            int32    `json:"Id"`
-	IsDeleted     *bool    `json:"IsDeleted,omitempty"`
-	NetworkMargin *float32 `json:"NetworkMargin,omitempty"`
+	CustomRelevancyScore *int32   `json:"CustomRelevancyScore,omitempty"`
+	Id                   int32    `json:"Id"`
+	IsDeleted            *bool    `json:"IsDeleted,omitempty"`
+	NetworkMargin        *float32 `json:"NetworkMargin,omitempty"`
 	// Deprecated:
 	PublisherAccountId *int32 `json:"PublisherAccountId,omitempty"`
 	Title              string `json:"Title"`
@@ -235,19 +238,21 @@ type ListSitesParams struct {
 
 // CreateSiteJSONBody defines parameters for CreateSite.
 type CreateSiteJSONBody struct {
-	IsDeleted     *bool    `json:"IsDeleted,omitempty"`
-	NetworkMargin *float32 `json:"NetworkMargin,omitempty"`
-	Title         string   `json:"Title"`
-	URL           string   `json:"URL"`
+	CustomRelevancyScore *int32   `json:"CustomRelevancyScore,omitempty"`
+	IsDeleted            *bool    `json:"IsDeleted,omitempty"`
+	NetworkMargin        *float32 `json:"NetworkMargin,omitempty"`
+	Title                string   `json:"Title"`
+	URL                  string   `json:"URL"`
 }
 
 // UpdateSiteJSONBody defines parameters for UpdateSite.
 type UpdateSiteJSONBody struct {
-	Id            int32    `json:"Id"`
-	IsDeleted     *bool    `json:"IsDeleted,omitempty"`
-	NetworkMargin *float32 `json:"NetworkMargin,omitempty"`
-	Title         string   `json:"Title"`
-	URL           string   `json:"URL"`
+	CustomRelevancyScore *int32   `json:"CustomRelevancyScore,omitempty"`
+	Id                   int32    `json:"Id"`
+	IsDeleted            *bool    `json:"IsDeleted,omitempty"`
+	NetworkMargin        *float32 `json:"NetworkMargin,omitempty"`
+	Title                string   `json:"Title"`
+	URL                  string   `json:"URL"`
 }
 
 // ListZonesParams defines parameters for ListZones.
